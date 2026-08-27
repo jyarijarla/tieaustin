@@ -13,6 +13,7 @@ const navLinks = [
     ],
   },
   { label: 'Join TiE Austin', to: '/join-tie', external: false },
+  { label: 'Events',          to: '/events',   external: false },
   { label: 'Austin Team',     to: '/team',     external: false },
 ]
 

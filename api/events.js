@@ -11,6 +11,7 @@ const {
   ZOHO_CLIENT_SECRET,
   ZOHO_REFRESH_TOKEN,
   ZOHO_PORTAL_ID,
+  ZOHO_BRAND_ID,
   ZOHO_ACCOUNTS_URL = 'https://accounts.zoho.com',
 } = process.env
 
@@ -44,7 +45,7 @@ export default async function handler(req, res) {
     const token = await getAccessToken()
 
     const zohoRes = await fetch(
-      `https://backstage.zoho.com/api/v1/portals/${ZOHO_PORTAL_ID}/events?status=upcoming`,
+      `https://www.zohoapis.com/backstage/v3/portals/${ZOHO_PORTAL_ID}/events?status=live&brand_id=${ZOHO_BRAND_ID}`,
       { headers: { Authorization: `Zoho-oauthtoken ${token}` } }
     )
 
@@ -55,12 +56,14 @@ export default async function handler(req, res) {
 
     const data = await zohoRes.json()
     const events = (data.events ?? []).map((e) => ({
-      id: e.event_id ?? e.id,
+      id: e.id,
       title: e.name,
-      location: e.location?.name ?? e.venue ?? '',
+      location: e.venues?.[0]
+        ? [e.venues[0].name, e.venues[0].city].filter(Boolean).join(' · ')
+        : '',
       desc: e.summary ?? e.description ?? '',
-      date: parseDate(e.start_date ?? e.from_date),
-      url: e.event_url ?? e.registration_url ?? null,
+      date: parseDate(e.start_time),
+      url: e.website_url ?? null,
     }))
 
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate')

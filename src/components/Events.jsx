@@ -45,9 +45,7 @@ export default function Events() {
             </h2>
           </div>
           <a
-            href="https://backstage.zoho.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/events"
             className="hidden sm:block text-xs font-bold tracking-widest uppercase text-gray-400 hover:text-gray-900 transition-colors"
           >
             All events →

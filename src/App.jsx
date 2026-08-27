@@ -8,6 +8,7 @@ import MembershipPage from './pages/Membership'
 import JoinTiEPage from './pages/JoinTiE'
 import PillarsPage from './pages/Pillars'
 import ContactPage from './pages/Contact'
+import EventsPage from './pages/EventsPage'
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/join-tie" element={<JoinTiEPage />} />
           <Route path="/pillars"  element={<PillarsPage />} />
           <Route path="/contact"  element={<ContactPage />} />
+          <Route path="/events"   element={<EventsPage />} />
         </Routes>
       </main>
       <Footer />

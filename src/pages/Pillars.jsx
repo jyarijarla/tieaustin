@@ -68,11 +68,11 @@ const pillars = [
 ]
 
 const altBgs = [
-  { bgStyle: null,      icon: 'text-tie-red', num: 'text-gray-200', light: true  },
   { bgStyle: '#7D1426', icon: 'text-white',   num: 'text-white/20', light: false },
   { bgStyle: null,      icon: 'text-tie-red', num: 'text-gray-200', light: true  },
   { bgStyle: '#7D1426', icon: 'text-white',   num: 'text-white/20', light: false },
   { bgStyle: null,      icon: 'text-tie-red', num: 'text-gray-200', light: true  },
+  { bgStyle: '#7D1426', icon: 'text-white',   num: 'text-white/20', light: false },
 ]
 
 export default function PillarsPage() {
