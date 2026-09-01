@@ -4,6 +4,7 @@
 //   ZOHO_CLIENT_SECRET
 //   ZOHO_REFRESH_TOKEN
 //   ZOHO_PORTAL_ID       (from your Backstage portal URL)
+//   ZOHO_BRAND_ID        (from your Backstage brand URL)
 //   ZOHO_ACCOUNTS_URL    (default: https://accounts.zoho.com — change for .eu/.in regions)
 
 const {
@@ -32,11 +33,13 @@ async function getAccessToken() {
 }
 
 function parseDate(dateStr) {
-  if (!dateStr) return { day: '—', month: '—' }
+  if (!dateStr) return { day: '—', month: '—', year: '—', iso: null }
   const d = new Date(dateStr)
   return {
     day: d.getDate().toString(),
     month: d.toLocaleString('en-US', { month: 'short' }),
+    year: d.getFullYear().toString(),
+    iso: d.toISOString(),
   }
 }
 
@@ -45,7 +48,7 @@ export default async function handler(req, res) {
     const token = await getAccessToken()
 
     const zohoRes = await fetch(
-      `https://www.zohoapis.com/backstage/v3/portals/${ZOHO_PORTAL_ID}/events?status=live&brand_id=${ZOHO_BRAND_ID}`,
+      `https://www.zohoapis.com/backstage/v3/portals/${ZOHO_PORTAL_ID}/events?status=all&brand_id=${ZOHO_BRAND_ID}`,
       { headers: { Authorization: `Zoho-oauthtoken ${token}` } }
     )
 
@@ -55,19 +58,35 @@ export default async function handler(req, res) {
     }
 
     const data = await zohoRes.json()
-    const events = (data.events ?? []).map((e) => ({
-      id: e.id,
-      title: e.name,
-      location: e.venues?.[0]
-        ? [e.venues[0].name, e.venues[0].city].filter(Boolean).join(' · ')
-        : '',
-      desc: e.summary ?? e.description ?? '',
-      date: parseDate(e.start_time),
-      url: e.website_url ?? null,
-    }))
+    const now = Date.now()
+
+    const events = (data.events ?? []).map((e) => {
+      const startMs = e.start_time ? new Date(e.start_time).getTime() : null
+      const endMs = e.end_time ? new Date(e.end_time).getTime() : startMs
+      return {
+        id: e.id,
+        title: e.name,
+        location: e.venues?.[0]
+          ? [e.venues[0].name, e.venues[0].city].filter(Boolean).join(' · ')
+          : '',
+        desc: e.summary ?? e.description ?? '',
+        date: parseDate(e.start_time),
+        url: e.website_url ?? null,
+        isPast: endMs !== null ? endMs < now : false,
+      }
+    })
+
+    // upcoming: soonest first; past: most recent first
+    const upcoming = events
+      .filter((e) => !e.isPast)
+      .sort((a, b) => new Date(a.date.iso) - new Date(b.date.iso))
+
+    const past = events
+      .filter((e) => e.isPast)
+      .sort((a, b) => new Date(b.date.iso) - new Date(a.date.iso))
 
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate')
-    res.status(200).json(events)
+    res.status(200).json({ upcoming, past })
   } catch (err) {
     console.error('events handler error:', err)
     res.status(500).json({ error: err.message })

@@ -23,7 +23,8 @@ export default function Events() {
         return r.json()
       })
       .then((data) => {
-        setEvents(data.length ? data : FALLBACK_EVENTS)
+        const upcoming = data.upcoming ?? data
+        setEvents(upcoming.length ? upcoming.slice(0, 3) : FALLBACK_EVENTS)
         setLoading(false)
       })
       .catch(() => {

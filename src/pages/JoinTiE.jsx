@@ -272,8 +272,8 @@ function MembershipCard({ cat }) {
         {content.map((item, i) => renderItem(item, i))}
         <p className="text-[11px] text-gray-400 mt-4 pt-4 border-t border-gray-100">
           Questions? Write to{' '}
-          <a href="mailto:membership@tie.org" className="text-tie-red hover:underline">
-            membership@tie.org
+          <a href="mailto:ExecutiveDirector@austin.tie.org" className="text-tie-red hover:underline">
+            ExecutiveDirector@austin.tie.org
           </a>
         </p>
       </div>
