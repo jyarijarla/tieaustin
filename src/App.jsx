@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -10,9 +11,16 @@ import PillarsPage from './pages/Pillars'
 import ContactPage from './pages/Contact'
 import EventsPage from './pages/EventsPage'
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  return null
+}
+
 export default function App() {
   return (
     <div className="min-h-screen w-full flex flex-col">
+      <ScrollToTop />
       <Navbar />
       <main className="flex-1">
         <Routes>

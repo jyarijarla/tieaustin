@@ -11,7 +11,7 @@ export default function JoinCTA() {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <a
-            href="https://tie.org/join-now/"
+            href="https://creatorapp.zohopublic.com/tie_dev/chapters/page-embed/TiE_Member_Details/wbegNfNZCbUwdv6jTpxMeK4HtB0KnTkKqVM63wEZzQ1yBx6pqybCB0kv3geqGsvDZASaa6K3XAkkAZbmYfC5kG3ZHQkAj7CabE34?Chapter_Name=4189632000003403039"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white text-tie-red text-xs font-black tracking-widest uppercase px-7 py-4 rounded-full hover:bg-gray-100 transition-colors"

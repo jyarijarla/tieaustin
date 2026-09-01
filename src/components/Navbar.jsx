@@ -112,7 +112,7 @@ export default function Navbar() {
           })}
 
           <a
-            href="https://tie.org/join-now/"
+            href="https://creatorapp.zohopublic.com/tie_dev/chapters/page-embed/TiE_Member_Details/wbegNfNZCbUwdv6jTpxMeK4HtB0KnTkKqVM63wEZzQ1yBx6pqybCB0kv3geqGsvDZASaa6K3XAkkAZbmYfC5kG3ZHQkAj7CabE34?Chapter_Name=4189632000003403039"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-tie-red text-white text-[11px] font-bold tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-tie-red-dark transition-colors whitespace-nowrap"
@@ -192,7 +192,7 @@ export default function Navbar() {
 
           <div className="px-6 py-4">
             <a
-              href="https://tie.org/join-now/"
+              href="https://creatorapp.zohopublic.com/tie_dev/chapters/page-embed/TiE_Member_Details/wbegNfNZCbUwdv6jTpxMeK4HtB0KnTkKqVM63wEZzQ1yBx6pqybCB0kv3geqGsvDZASaa6K3XAkkAZbmYfC5kG3ZHQkAj7CabE34?Chapter_Name=4189632000003403039"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
