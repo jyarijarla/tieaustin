@@ -19,13 +19,22 @@ function PinIcon() {
 }
 
 function EventCard({ e }) {
-  const inner = (
-    <div className="group bg-white border border-gray-200 rounded-xl p-5 flex gap-5 items-start hover:border-gray-300 hover:shadow-sm transition-all">
+  const card = (
+    <div className="group bg-white border border-gray-200 rounded-xl p-5 flex gap-5 items-start hover:border-[#7D1426]/30 hover:shadow-sm transition-all">
       {/* Date block */}
-      <div className="shrink-0 flex flex-col items-center justify-center rounded-lg border border-gray-200 w-12 h-14 text-center bg-gray-50">
-        <span className="text-lg font-black text-gray-900 leading-none tabular-nums">{e.date.day}</span>
-        <span className="text-[9px] font-bold tracking-widest uppercase text-[#7D1426] mt-0.5">{e.date.month}</span>
-        <span className="text-[8px] text-gray-400 mt-px">{e.date.year}</span>
+      <div
+        className="shrink-0 flex flex-col items-center justify-center rounded-lg w-12 h-14 text-center"
+        style={{ background: e.isPast ? '#f9fafb' : '#7D1426', border: e.isPast ? '1px solid #e5e7eb' : 'none' }}
+      >
+        <span className="text-lg font-black leading-none tabular-nums" style={{ color: e.isPast ? '#111827' : '#fff' }}>
+          {e.date.day}
+        </span>
+        <span className="text-[9px] font-bold tracking-widest uppercase mt-0.5" style={{ color: e.isPast ? '#7D1426' : 'rgba(255,255,255,0.75)' }}>
+          {e.date.month}
+        </span>
+        <span className="text-[8px] mt-px" style={{ color: e.isPast ? '#9ca3af' : 'rgba(255,255,255,0.5)' }}>
+          {e.date.year}
+        </span>
       </div>
 
       {/* Body */}
@@ -43,16 +52,9 @@ function EventCard({ e }) {
         )}
       </div>
 
-      {/* CTA */}
-      {e.url && !e.isPast && (
-        <div className="shrink-0 self-center">
-          <span className="text-[11px] font-semibold text-[#7D1426] border border-[#7D1426]/40 rounded-full px-3 py-1.5 group-hover:bg-[#7D1426] group-hover:text-white group-hover:border-[#7D1426] transition-all whitespace-nowrap">
-            Register
-          </span>
-        </div>
-      )}
-      {e.url && e.isPast && (
-        <div className="shrink-0 self-center text-gray-300 group-hover:text-gray-500 transition-colors text-sm">
+      {/* Chevron */}
+      {e.url && (
+        <div className="shrink-0 self-center text-gray-300 group-hover:text-[#7D1426] transition-colors text-base leading-none">
           →
         </div>
       )}
@@ -61,10 +63,10 @@ function EventCard({ e }) {
 
   return e.url ? (
     <a href={e.url} target="_blank" rel="noopener noreferrer" className="block">
-      {inner}
+      {card}
     </a>
   ) : (
-    <div>{inner}</div>
+    <div>{card}</div>
   )
 }
 
@@ -148,27 +150,32 @@ export default function EventsPage() {
     )
   }, [pool, query])
 
-  // Reset page when filter or search changes
   useEffect(() => { setPage(1) }, [filter, query])
 
   const pageEvents = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-3xl mx-auto px-6 py-16">
+    <div className="min-h-screen" style={{ background: '#f8f7f5' }}>
 
-        {/* Page header */}
-        <div className="mb-10">
-          <p className="text-[#7D1426] text-[11px] font-bold tracking-[0.25em] uppercase mb-2">TiE Austin</p>
-          <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tight">Events</h1>
-          <p className="text-gray-500 text-sm mt-2">
-            Networking, mentorship, pitch nights, and community gatherings.
-          </p>
+      {/* Page header — maroon left border + subtle warm tint */}
+      <div className="border-b border-gray-200 bg-white">
+        <div className="max-w-3xl mx-auto px-6 py-12">
+          <div className="flex items-start gap-5">
+            <div className="w-1 self-stretch rounded-full shrink-0" style={{ background: '#7D1426', minHeight: '3.5rem' }} />
+            <div>
+              <p className="text-[#7D1426] text-[11px] font-bold tracking-[0.25em] uppercase mb-1">TiE Austin</p>
+              <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tight leading-tight">Events</h1>
+              <p className="text-gray-400 text-sm mt-1.5">
+                Networking, mentorship, pitch nights, and community gatherings.
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8">
-          {/* Search */}
+      {/* Controls */}
+      <div className="border-b border-gray-200 bg-white sticky top-16 z-20 shadow-sm">
+        <div className="max-w-3xl mx-auto px-6 py-3 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
               <SearchIcon />
@@ -178,25 +185,22 @@ export default function EventsPage() {
               placeholder="Search events…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:border-[#7D1426] transition-colors placeholder-gray-400"
+              className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#7D1426] focus:bg-white transition-colors placeholder-gray-400"
             />
           </div>
 
-          {/* Filter tabs */}
-          <div className="flex shrink-0 bg-white border border-gray-200 rounded-lg p-1 gap-1">
+          <div className="flex shrink-0 bg-gray-100 rounded-lg p-1 gap-1">
             {['upcoming', 'past'].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
                 className={`px-4 py-1.5 text-xs font-semibold rounded-md capitalize transition-colors ${
-                  filter === f
-                    ? 'bg-[#7D1426] text-white'
-                    : 'text-gray-500 hover:text-gray-800'
+                  filter === f ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
                 {f}
                 {!loading && (
-                  <span className={`ml-1.5 text-[10px] ${filter === f ? 'text-white/70' : 'text-gray-400'}`}>
+                  <span className={`ml-1.5 text-[10px] ${filter === f ? 'text-gray-400' : 'text-gray-400'}`}>
                     {f === 'upcoming' ? upcoming.length : past.length}
                   </span>
                 )}
@@ -204,8 +208,11 @@ export default function EventsPage() {
             ))}
           </div>
         </div>
+      </div>
 
-        {/* States */}
+      {/* Content */}
+      <div className="max-w-3xl mx-auto px-6 py-8">
+
         {loading && (
           <div className="text-center text-gray-400 text-sm py-20">Loading events…</div>
         )}
@@ -221,28 +228,28 @@ export default function EventsPage() {
 
         {!loading && !error && (
           <>
-            {/* Result count */}
-            {query && (
+            {query && filtered.length > 0 && (
               <p className="text-xs text-gray-400 mb-4">
-                {filtered.length} result{filtered.length !== 1 ? 's' : ''} for "{query}"
+                {filtered.length} result{filtered.length !== 1 ? 's' : ''} for &ldquo;{query}&rdquo;
               </p>
             )}
 
-            {/* Empty */}
             {filtered.length === 0 && (
               <div className="text-center py-20 text-gray-400 text-sm">
-                {query ? `No events match "${query}"` : filter === 'upcoming' ? 'No upcoming events right now — check back soon.' : 'No past events found.'}
+                {query
+                  ? `No events match "${query}"`
+                  : filter === 'upcoming'
+                  ? 'No upcoming events right now — check back soon.'
+                  : 'No past events found.'}
               </div>
             )}
 
-            {/* Event list */}
             {filtered.length > 0 && (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {pageEvents.map((e) => <EventCard key={e.id} e={e} />)}
               </div>
             )}
 
-            {/* Pagination */}
             <Pagination page={page} total={filtered.length} onPage={setPage} />
           </>
         )}
