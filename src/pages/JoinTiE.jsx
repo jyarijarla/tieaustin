@@ -2,8 +2,99 @@ import { useState } from 'react'
 
 const TABS = ['About', 'Eligibility Criteria', 'Benefits']
 
+const APPLY_URL =
+  'https://creatorapp.zohopublic.com/tie_dev/chapters/page-embed/TiE_Member_Details/wbegNfNZCbUwdv6jTpxMeK4HtB0KnTkKqVM63wEZzQ1yBx6pqybCB0kv3geqGsvDZASaa6K3XAkkAZbmYfC5kG3ZHQkAj7CabE34?Chapter_Name=4189632000003403039'
+
 // item types: para | section | header | bullet | note
 const categories = [
+  {
+    id: 'associate',
+    prefix: 'TiE',
+    title: 'Associate',
+    bgStyle: { background: 'linear-gradient(160deg, #1a3a6e 0%, #122a54 40%, #0a1830 100%)' },
+    illustration: (
+      <svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" style={{ opacity: 0.12, position: 'absolute', bottom: 10, right: 60 }}>
+        <rect x="10" y="15" width="100" height="60" rx="4" fill="none" stroke="white" strokeWidth="3"/>
+        <line x1="10" y1="30" x2="110" y2="30" stroke="white" strokeWidth="2"/>
+        <circle cx="35" cy="55" r="8" fill="white"/>
+        <circle cx="60" cy="50" r="8" fill="white"/>
+        <circle cx="85" cy="45" r="8" fill="white"/>
+        <polyline points="35,55 60,50 85,45" fill="none" stroke="white" strokeWidth="2"/>
+      </svg>
+    ),
+    tabs: {
+      About: [
+        { type: 'para', text: "The TiE Associate Membership is designed for early-stage entrepreneurs, young professionals, and aspiring founders who are ready to accelerate their business journey. It provides a gateway to TiE's global network of industry leaders, mentors, and accomplished entrepreneurs." },
+        { type: 'para', text: "Associates gain access to curated learning opportunities, practical insights, and meaningful peer-to-peer connections—helping them build skills, strengthen their entrepreneurial mindset, and navigate the path from idea to growth with confidence." },
+        { type: 'para', text: '$125/year' },
+      ],
+      'Eligibility Criteria': [
+        { type: 'para', text: 'Applicants may apply directly or be referred by an existing TiE member. Ideal candidates include:' },
+        { type: 'bullet', text: 'Early-stage entrepreneurs, startup founders, or small-business owners (from ideation to operational stages).' },
+        { type: 'bullet', text: 'Professionals or aspiring founders seeking exposure to entrepreneurship.' },
+        { type: 'bullet', text: 'Individuals with demonstrated entrepreneurial intent or initial market traction.' },
+        { type: 'bullet', text: 'SMEs or business operators contributing to job creation or market impact.' },
+        { type: 'bullet', text: 'Anyone with a genuine interest in learning, networking, and engaging with the TiE community.' },
+        { type: 'header', text: 'Membership Fee' },
+        { type: 'bullet', text: '$125 per year.' },
+      ],
+      Benefits: [
+        { type: 'section', text: 'Learning & Skill Development' },
+        { type: 'bullet', text: 'Entrepreneurship training through Bootcamps, TiE Institute programs, and workshops.' },
+        { type: 'bullet', text: 'Exposure to real-world founder journeys through TiE Story sessions.' },
+        { type: 'bullet', text: 'Monthly and annual TiE Global newsletters.' },
+        { type: 'section', text: 'Network & Community' },
+        { type: 'bullet', text: 'Networking with experienced entrepreneurs, mentors, and industry leaders.' },
+        { type: 'bullet', text: 'Access to chapter-level events, knowledge sessions, and community meetups.' },
+        { type: 'bullet', text: 'Opportunities to connect with mentors—including serial entrepreneurs—across the TiE network.' },
+        { type: 'section', text: 'Career & Growth Opportunities' },
+        { type: 'bullet', text: 'Access to emerging and established funding networks.' },
+        { type: 'bullet', text: 'Opportunities for internships within TiE member companies.' },
+        { type: 'bullet', text: 'Soft support for career development and professional visibility.' },
+        { type: 'section', text: 'Events & Global Access' },
+        { type: 'bullet', text: 'Complimentary access to regular TiE chapter events.' },
+        { type: 'bullet', text: 'Discounted passes to flagship TiE conferences such as TiEcon, TiE Global Summit, and events hosted by other chapters.' },
+        { type: 'bullet', text: 'Participation in youth and university-focused programs (TYE, TiE University Cup, etc.).' },
+      ],
+    },
+  },
+  {
+    id: 'charter',
+    prefix: 'TiE Charter',
+    title: 'Member',
+    bgStyle: { background: 'linear-gradient(160deg, #3d1a5c 0%, #2a1040 40%, #180828 100%)' },
+    illustration: (
+      <svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" style={{ opacity: 0.12, position: 'absolute', bottom: 10, right: 60 }}>
+        <polygon points="60,10 68,35 95,35 73,52 81,78 60,62 39,78 47,52 25,35 52,35" fill="white"/>
+      </svg>
+    ),
+    tabs: {
+      About: [
+        { type: 'para', text: "TiE Charter Members (CMs) are accomplished entrepreneurs, corporate intrapreneurs, and thought leaders who have reached a pinnacle in their professional journey and are eager to give back to the entrepreneurial ecosystem. They embody the TiE mission of fostering wealth creation, mentoring the next generation, and strengthening the entrepreneurial community." },
+        { type: 'para', text: "Charter Members play a pivotal role in shaping TiE's vision and operations, offering their expertise, leadership, and experience to empower fellow members and aspiring entrepreneurs. The rewards of Charter Membership go beyond personal recognition—they lie in contributing meaningfully to a global network of innovation and impact." },
+        { type: 'para', text: '$1,200/year' },
+      ],
+      'Eligibility Criteria': [
+        { type: 'bullet', text: 'Successful, high-profile entrepreneurs, corporate intrapreneurs, and thought leaders.' },
+        { type: 'bullet', text: 'Reached a stage in their professional life when they are ready, willing, and able to contribute to fellow members.' },
+        { type: 'bullet', text: "Dedicated to the mission of TiE and the virtuous cycle of wealth creation, engaging and giving back to the community." },
+        { type: 'bullet', text: 'Believe in the merits of capitalism and have a strong desire to help other entrepreneurs.' },
+        { type: 'header', text: 'Membership Fee' },
+        { type: 'bullet', text: '$1,200 per year.' },
+        { type: 'note', text: 'Charter Membership is by invitation only and subject to a due process prescribed in the TiE bylaws.' },
+      ],
+      Benefits: [
+        { type: 'bullet', text: 'Exclusive networking with successful entrepreneurs, thought leaders, and Charter Members locally and globally.' },
+        { type: 'bullet', text: 'Guide and inspire budding entrepreneurs through structured mentorship programs.' },
+        { type: 'bullet', text: 'Participate as speakers, panelists, and thought leaders at TiE events.' },
+        { type: 'bullet', text: 'Complimentary attendance to all flagship TiE events worldwide and invitations to exclusive local events, delegations, and mixers.' },
+        { type: 'bullet', text: 'Opportunity to recruit talented professionals, interns, and volunteers.' },
+        { type: 'bullet', text: "Engage in chapter or global leadership roles to shape the future of TiE." },
+        { type: 'bullet', text: 'Invitation to the annual TiE CM Retreat—an exclusive destination event to build deeper connections within the CM community.' },
+        { type: 'bullet', text: 'Satisfaction and recognition from giving back to the entrepreneurial community while helping shape the next generation of leaders.' },
+      ],
+    },
+  },
   {
     id: 'nxtgen',
     prefix: 'TiE',
@@ -20,8 +111,9 @@ const categories = [
     ),
     tabs: {
       About: [
-        { type: 'para', text: "NxtGen is TiE's exclusive membership category for fostering peer learning, exploration, and early entrepreneurial exposure for young adults aged 18–32, locally and globally." },
+        { type: 'para', text: "NxtGen (fka Student) is TiE's exclusive membership category for fostering peer learning, exploration, and early entrepreneurial exposure for young adults aged 18–32, locally and globally." },
         { type: 'para', text: "Built to bridge youth ambition with experienced leadership, NxtGen provides access to mentorship, peer learning, global exposure, and entrepreneurial resources—equipping the next generation to build impactful, scalable ventures." },
+        { type: 'para', text: '$75/year' },
       ],
       'Eligibility Criteria': [
         { type: 'header', text: 'Target Audience' },
@@ -34,9 +126,9 @@ const categories = [
         { type: 'bullet', text: 'Aspiring founders, innovators, and early-stage entrepreneurs.' },
         { type: 'bullet', text: 'Children of TiE Charter Members (CMs) and Associate Members (AMs).' },
         { type: 'header', text: 'Membership Fee' },
-        { type: 'bullet', text: 'USD 75 / INR 5,000 per year.' },
+        { type: 'bullet', text: '$75 per year.' },
         { type: 'header', text: 'Progression Path' },
-        { type: 'bullet', text: 'NxtGen → Associate Member → Scaleup Member → Charter Member (by age 32).' },
+        { type: 'bullet', text: 'NxtGen → Associate Member → Charter Member (by age 32).' },
       ],
       Benefits: [
         { type: 'section', text: 'Global Community & Networking' },
@@ -60,139 +152,9 @@ const categories = [
     },
   },
   {
-    id: 'associate',
+    id: 'partner',
     prefix: 'TiE',
-    title: 'Associate',
-    bgStyle: { background: 'linear-gradient(160deg, #1a3a6e 0%, #122a54 40%, #0a1830 100%)' },
-    illustration: (
-      <svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" style={{ opacity: 0.12, position: 'absolute', bottom: 10, right: 60 }}>
-        <rect x="10" y="15" width="100" height="60" rx="4" fill="none" stroke="white" strokeWidth="3"/>
-        <line x1="10" y1="30" x2="110" y2="30" stroke="white" strokeWidth="2"/>
-        <circle cx="35" cy="55" r="8" fill="white"/>
-        <circle cx="60" cy="50" r="8" fill="white"/>
-        <circle cx="85" cy="45" r="8" fill="white"/>
-        <polyline points="35,55 60,50 85,45" fill="none" stroke="white" strokeWidth="2"/>
-      </svg>
-    ),
-    tabs: {
-      About: [
-        { type: 'para', text: "The TiE Associate Membership is designed for early-stage entrepreneurs, young professionals, and aspiring founders who are ready to accelerate their business journey. It provides a gateway to TiE's global network of industry leaders, mentors, and accomplished entrepreneurs." },
-        { type: 'para', text: "Associates gain access to curated learning opportunities, practical insights, and meaningful peer-to-peer connections—helping them build skills, strengthen their entrepreneurial mindset, and navigate the path from idea to growth with confidence." },
-      ],
-      'Eligibility Criteria': [
-        { type: 'para', text: 'Applicants may apply directly or be referred by an existing TiE member. Ideal candidates include:' },
-        { type: 'bullet', text: 'Early-stage entrepreneurs, startup founders, or small-business owners (from ideation to operational stages).' },
-        { type: 'bullet', text: 'Professionals or aspiring founders seeking exposure to entrepreneurship.' },
-        { type: 'bullet', text: 'Individuals with demonstrated entrepreneurial intent or initial market traction.' },
-        { type: 'bullet', text: 'SMEs or business operators contributing to job creation or market impact.' },
-        { type: 'bullet', text: 'Anyone with a genuine interest in learning, networking, and engaging with the TiE community.' },
-      ],
-      Benefits: [
-        { type: 'section', text: 'Learning & Skill Development' },
-        { type: 'bullet', text: 'Entrepreneurship training through Bootcamps, TiE Institute programs, and workshops.' },
-        { type: 'bullet', text: 'Exposure to real-world founder journeys through TiE Story sessions.' },
-        { type: 'bullet', text: 'Monthly and annual TiE Global newsletters.' },
-        { type: 'section', text: 'Network & Community' },
-        { type: 'bullet', text: 'Networking with experienced entrepreneurs, mentors, and industry leaders.' },
-        { type: 'bullet', text: 'Access to chapter-level events, knowledge sessions, and community meetups.' },
-        { type: 'bullet', text: 'Opportunities to connect with mentors—including serial entrepreneurs—across the TiE network.' },
-        { type: 'section', text: 'Career & Growth Opportunities' },
-        { type: 'bullet', text: 'Access to emerging and established funding networks.' },
-        { type: 'bullet', text: 'Opportunities for internships within TiE member companies.' },
-        { type: 'bullet', text: 'Soft support for career development and professional visibility.' },
-        { type: 'section', text: 'Events & Global Access' },
-        { type: 'bullet', text: 'Complimentary access to regular TiE chapter events.' },
-        { type: 'bullet', text: 'Discounted passes to flagship TiE conferences such as TiEcon, TiE Global Summit, and events hosted by other chapters.' },
-        { type: 'bullet', text: 'Participation in youth and university-focused programs (TYE, TiE University Cup, etc.).' },
-      ],
-    },
-  },
-  {
-    id: 'scaleup',
-    prefix: 'TiE',
-    title: 'Scaleup',
-    bgStyle: { background: 'linear-gradient(160deg, #155a38 0%, #0f4028 40%, #092818 100%)' },
-    illustration: (
-      <svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" style={{ opacity: 0.12, position: 'absolute', bottom: 10, right: 60 }}>
-        <polyline points="10,70 35,50 60,35 85,18 110,10" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-        <polyline points="85,10 110,10 110,35" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
-    tabs: {
-      About: [
-        { type: 'para', text: 'The Scaleup Membership is designed for founders running operating ventures with proven traction—through revenue and/or funding—and actively scaling their businesses.' },
-        { type: 'para', text: 'It supports high-potential entrepreneurs in their journey toward becoming Charter Members by providing access to capital, strategic mentorship, and a global ecosystem to accelerate growth and expansion.' },
-      ],
-      'Eligibility Criteria': [
-        { type: 'header', text: 'Business Stage & Traction' },
-        { type: 'bullet', text: 'Founders of operating ventures with demonstrated traction.' },
-        { type: 'bullet', text: 'Early-stage startups in Seed to Pre-Series A stage.' },
-        { type: 'bullet', text: 'Actively scaling operations.' },
-        { type: 'header', text: 'Financial Benchmarks' },
-        { type: 'bullet', text: 'Raised $100K+ (USA) or ₹1 Crore+ (India) from institutional investors.' },
-        { type: 'bullet', text: 'OR Startup exit of at least $2.5M / ₹20 Crore in the last 3 years.' },
-        { type: 'bullet', text: 'OR Operating business with $1M / ₹8 Crore+ annual turnover.' },
-        { type: 'header', text: 'Founder Intent' },
-        { type: 'bullet', text: 'Aspiring to transition toward Charter Membership.' },
-        { type: 'bullet', text: 'Willingness to contribute to the TiE ecosystem.' },
-      ],
-      Benefits: [
-        { type: 'section', text: 'Priority Capital Access' },
-        { type: 'bullet', text: 'First-look access to TiE Angel sessions.' },
-        { type: 'bullet', text: 'Curated pitch opportunities with institutional VCs.' },
-        { type: 'section', text: 'Strategic Mentorship' },
-        { type: 'bullet', text: 'Guidance from experienced Charter Members.' },
-        { type: 'bullet', text: 'Support on leadership, hiring, and scaling challenges.' },
-        { type: 'section', text: 'Exclusive Peer Network' },
-        { type: 'bullet', text: 'Access to curated Scaleup-only founder groups.' },
-        { type: 'bullet', text: 'Peer-to-peer learning and accountability.' },
-        { type: 'section', text: 'Global Market Access' },
-        { type: 'bullet', text: 'Introductions across 60+ TiE chapters worldwide.' },
-        { type: 'bullet', text: 'Support for cross-border expansion.' },
-        { type: 'section', text: 'Premium Events & Exposure' },
-        { type: 'bullet', text: 'Participation in TiE Global Summit (TGS) and TiEcon.' },
-        { type: 'bullet', text: 'Pitch showcases, breakout sessions, and global visibility.' },
-      ],
-    },
-  },
-  {
-    id: 'charter',
-    prefix: 'TiE Charter',
-    title: 'Member',
-    bgStyle: { background: 'linear-gradient(160deg, #3d1a5c 0%, #2a1040 40%, #180828 100%)' },
-    illustration: (
-      <svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" style={{ opacity: 0.12, position: 'absolute', bottom: 10, right: 60 }}>
-        <polygon points="60,10 68,35 95,35 73,52 81,78 60,62 39,78 47,52 25,35 52,35" fill="white"/>
-      </svg>
-    ),
-    tabs: {
-      About: [
-        { type: 'para', text: "TiE Charter Members (CMs) are accomplished entrepreneurs, corporate intrapreneurs, and thought leaders who have reached a pinnacle in their professional journey and are eager to give back to the entrepreneurial ecosystem. They embody the TiE mission of fostering wealth creation, mentoring the next generation, and strengthening the entrepreneurial community." },
-        { type: 'para', text: "Charter Members play a pivotal role in shaping TiE's vision and operations, offering their expertise, leadership, and experience to empower fellow members and aspiring entrepreneurs. The rewards of Charter Membership go beyond personal recognition—they lie in contributing meaningfully to a global network of innovation and impact." },
-      ],
-      'Eligibility Criteria': [
-        { type: 'bullet', text: 'Successful, high-profile entrepreneurs, corporate intrapreneurs, and thought leaders.' },
-        { type: 'bullet', text: 'Reached a stage in their professional life when they are ready, willing, and able to contribute to fellow members.' },
-        { type: 'bullet', text: "Dedicated to the mission of TiE and the virtuous cycle of wealth creation, engaging and giving back to the community." },
-        { type: 'bullet', text: 'Believe in the merits of capitalism and have a strong desire to help other entrepreneurs.' },
-        { type: 'note', text: 'Charter Membership is by invitation only and subject to a due process prescribed in the TiE bylaws.' },
-      ],
-      Benefits: [
-        { type: 'bullet', text: 'Exclusive networking with successful entrepreneurs, thought leaders, and Charter Members locally and globally.' },
-        { type: 'bullet', text: 'Guide and inspire budding entrepreneurs through structured mentorship programs.' },
-        { type: 'bullet', text: 'Participate as speakers, panelists, and thought leaders at TiE events.' },
-        { type: 'bullet', text: 'Complimentary attendance to all flagship TiE events worldwide and invitations to exclusive local events, delegations, and mixers.' },
-        { type: 'bullet', text: 'Opportunity to recruit talented professionals, interns, and volunteers.' },
-        { type: 'bullet', text: "Engage in chapter or global leadership roles to shape the future of TiE." },
-        { type: 'bullet', text: 'Invitation to the annual TiE CM Retreat—an exclusive destination event to build deeper connections within the CM community.' },
-        { type: 'bullet', text: 'Satisfaction and recognition from giving back to the entrepreneurial community while helping shape the next generation of leaders.' },
-      ],
-    },
-  },
-  {
-    id: 'corporate',
-    prefix: 'TiE Corporate',
-    title: 'Member',
+    title: 'Partner',
     bgStyle: { background: 'linear-gradient(160deg, #1a2a3e 0%, #111e2e 40%, #080f18 100%)' },
     illustration: (
       <svg viewBox="0 0 120 80" width="120" height="80" aria-hidden="true" style={{ opacity: 0.12, position: 'absolute', bottom: 0, right: 50 }}>
@@ -204,13 +166,16 @@ const categories = [
     ),
     tabs: {
       About: [
-        { type: 'para', text: "TiE Corporate Membership is designed for forward-thinking businesses and organizations seeking to actively engage with the global entrepreneurial ecosystem. This membership provides a unique platform for corporations to connect with innovative startups, industry leaders, and TiE's extensive network of successful entrepreneurs." },
+        { type: 'para', text: "TiE Partner Membership is designed for forward-thinking businesses and organizations seeking to actively engage with the TiE global entrepreneurial ecosystem. This membership provides a unique platform for corporations to connect with innovative startups, industry leaders, and TiE's extensive network of successful entrepreneurs." },
         { type: 'para', text: 'Up to two senior representatives (Director level and above) from the organization can participate, gaining access to opportunities for collaboration, thought leadership, and strategic insights.' },
+        { type: 'para', text: '$500/year' },
       ],
       'Eligibility Criteria': [
         { type: 'bullet', text: 'Membership is by invitation only from existing TiE Charter Members.' },
-        { type: 'bullet', text: "Prospective corporate members undergo a screening process to ensure alignment with TiE's mission and values." },
+        { type: 'bullet', text: "Prospective partner members undergo a screening process to ensure alignment with TiE's mission and values." },
         { type: 'bullet', text: 'Up to two senior representatives (Director level and above) may participate per membership.' },
+        { type: 'header', text: 'Membership Fee' },
+        { type: 'bullet', text: '$500 per year.' },
       ],
       Benefits: [
         { type: 'bullet', text: 'Exclusive networking sessions with entrepreneurs, investors, and industry leaders.' },
@@ -278,7 +243,7 @@ function MembershipCard({ cat }) {
           </p>
         </div>
         <a
-          href="https://tie.org/join-now/"
+          href={APPLY_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="absolute bottom-5 right-5 z-10 bg-tie-red text-white text-[11px] font-black tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-tie-red-dark transition-colors whitespace-nowrap shadow-lg"

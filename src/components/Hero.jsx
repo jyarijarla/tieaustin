@@ -4,9 +4,11 @@ export default function Hero() {
       className="relative flex flex-col overflow-hidden"
       style={{
         height: 'clamp(580px, 88vh, 960px)',
-        backgroundImage: "url('/Hero%20(2).png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center top',
+        backgroundImage: "url('/Hero%20(3).png')",
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center center',
+        backgroundColor: '#fff',
       }}
     >
       {/* Gradient scrim — light at top, dark at bottom for text legibility */}
