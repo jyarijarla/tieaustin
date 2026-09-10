@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useAdmin } from '../contexts/AdminContext'
 
 const JOIN_URL =
   'https://creatorapp.zohopublic.com/tie_dev/chapters/page-embed/TiE_Member_Details/wbegNfNZCbUwdv6jTpxMeK4HtB0KnTkKqVM63wEZzQ1yBx6pqybCB0kv3geqGsvDZASaa6K3XAkkAZbmYfC5kG3ZHQkAj7CabE34?Chapter_Name=4189632000003403039'
@@ -32,7 +33,9 @@ function FooterLink({ item }) {
   )
 }
 
-export default function Footer() {
+export default function Footer({ onAdminClick }) {
+  const { isAdmin } = useAdmin()
+
   return (
     <footer className="bg-gray-950 text-white px-6 pt-14 pb-8">
       <div className="max-w-5xl mx-auto">
@@ -81,18 +84,31 @@ export default function Footer() {
           <p className="text-xs text-gray-600">
             © {new Date().getFullYear()} TiE Austin. All rights reserved.
           </p>
-          <p className="text-xs text-gray-700">
-            Part of{' '}
-            <a
-              href="https://tie.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              TiE Global
-            </a>
-            {' '}— 61 chapters worldwide.
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs text-gray-700">
+              Part of{' '}
+              <a
+                href="https://tie.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-white transition-colors"
+              >
+                TiE Global
+              </a>
+              {' '}— 61 chapters worldwide.
+            </p>
+            {!isAdmin && (
+              <button
+                onClick={onAdminClick}
+                title="Admin login"
+                className="text-gray-700 hover:text-gray-400 transition-colors"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
       </div>

@@ -1,7 +1,11 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { AdminProvider, useAdmin } from './contexts/AdminContext'
+import { ContentProvider } from './contexts/ContentContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import AdminBar from './components/admin/AdminBar'
+import LoginModal from './components/admin/LoginModal'
 import Home from './pages/Home'
 import AboutPage from './pages/About'
 import TeamPage from './pages/Team'
@@ -17,11 +21,14 @@ function ScrollToTop() {
   return null
 }
 
-export default function App() {
+function AppShell() {
+  const { isAdmin } = useAdmin()
+  const [loginOpen, setLoginOpen] = useState(false)
+
   return (
-    <div className="min-h-screen w-full flex flex-col">
+    <div className="min-h-screen w-full flex flex-col" style={{ paddingBottom: isAdmin ? '3rem' : 0 }}>
       <ScrollToTop />
-      <Navbar />
+      <Navbar onAdminClick={() => setLoginOpen(true)} />
       <main className="flex-1">
         <Routes>
           <Route path="/"         element={<Home />} />
@@ -34,7 +41,19 @@ export default function App() {
           <Route path="/events"   element={<EventsPage />} />
         </Routes>
       </main>
-      <Footer />
+      <Footer onAdminClick={() => setLoginOpen(true)} />
+      {isAdmin && <AdminBar />}
+      {loginOpen && !isAdmin && <LoginModal onClose={() => setLoginOpen(false)} />}
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <AdminProvider>
+      <ContentProvider>
+        <AppShell />
+      </ContentProvider>
+    </AdminProvider>
   )
 }
