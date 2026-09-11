@@ -43,6 +43,7 @@ export async function appendHistory({ message, content }) {
     access: 'public',
     contentType: 'application/json',
     addRandomSuffix: false,
+    allowOverwrite: true,
   })
   return entry
 }
@@ -68,6 +69,7 @@ export default async function handler(req, res) {
         access: 'public',
         contentType: 'application/json',
         addRandomSuffix: false,
+        allowOverwrite: true,
       })
       await appendHistory({ message: message.trim(), content })
       return res.status(200).json({ ok: true })
