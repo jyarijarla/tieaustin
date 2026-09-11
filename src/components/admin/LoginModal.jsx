@@ -45,7 +45,7 @@ export default function LoginModal({ onClose }) {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter admin password"
               autoFocus
-              className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-xl outline-none focus:border-[#7D1426] transition-colors"
+              className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-xl outline-none focus:border-[#7D1426] transition-colors"
             />
             {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
           </div>

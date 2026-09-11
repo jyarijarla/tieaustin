@@ -13,6 +13,10 @@
 
 a, button, [role="button"], summary, label[for], select { cursor: pointer; }
 
+:root {
+  color-scheme: light;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', system-ui, sans-serif;

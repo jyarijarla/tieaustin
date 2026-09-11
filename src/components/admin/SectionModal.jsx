@@ -56,7 +56,7 @@ export default function SectionModal({ mode, page, section, index, onClose }) {
               <select
                 value={type}
                 onChange={(e) => handleTypeChange(e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#7D1426] transition-colors"
+                className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-lg outline-none focus:border-[#7D1426] transition-colors"
               >
                 {SECTION_TYPES.map((t) => (
                   <option key={t.type} value={t.type}>{t.label}</option>
