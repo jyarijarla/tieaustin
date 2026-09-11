@@ -15,9 +15,10 @@ function timeAgo(ts) {
 
 export default function HistoryPanel({ onClose }) {
   const { token } = useAdmin()
-  const { rollback } = useContent()
+  const { rollback, pendingChanges } = useContent()
   const [entries, setEntries] = useState(null)
   const [error, setError] = useState('')
+  const [restoring, setRestoring] = useState(false)
 
   useEffect(() => {
     fetch('/api/admin-history', { headers: { Authorization: `Bearer ${token}` } })
@@ -29,12 +30,20 @@ export default function HistoryPanel({ onClose }) {
       .catch(() => setError('Failed to load history.'))
   }, [token])
 
-  function handleRestore(entry) {
-    if (!window.confirm(`Restore to "${entry.message}" (${timeAgo(entry.timestamp)})? This becomes the new current version.`)) return
-    onClose()
-    rollback(entry.id, entry.message).catch((e) => {
-      if (e.message !== 'cancelled') alert('Failed to restore. Please try again.')
-    })
+  async function handleRestore(entry) {
+    const warning = pendingChanges.length > 0
+      ? ` This replaces your ${pendingChanges.length} unpublished change${pendingChanges.length === 1 ? '' : 's'} in this session.`
+      : ''
+    if (!window.confirm(`Load "${entry.message}" (${timeAgo(entry.timestamp)}) into your draft?${warning} You'll still need to publish to make it live.`)) return
+    setRestoring(true)
+    try {
+      await rollback(entry.id, entry.message)
+      onClose()
+    } catch (e) {
+      alert(e.message || 'Failed to load that version. Please try again.')
+    } finally {
+      setRestoring(false)
+    }
   }
 
   return (
@@ -43,7 +52,7 @@ export default function HistoryPanel({ onClose }) {
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0">
           <div>
             <p className="font-black text-gray-900 text-sm">Change history</p>
-            <p className="text-xs text-gray-400 mt-0.5">Restoring a version creates a new change — nothing is lost</p>
+            <p className="text-xs text-gray-400 mt-0.5">Loads into your draft — publish afterward to make it live</p>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition-colors p-1">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -67,7 +76,8 @@ export default function HistoryPanel({ onClose }) {
               ) : (
                 <button
                   onClick={() => handleRestore(entry)}
-                  className="text-xs font-semibold shrink-0 hover:underline"
+                  disabled={restoring}
+                  className="text-xs font-semibold shrink-0 hover:underline disabled:opacity-50"
                   style={{ color: '#7D1426' }}
                 >
                   Restore

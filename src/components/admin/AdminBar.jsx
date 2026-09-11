@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, History, LogOut } from 'lucide-react'
+import { Plus, History, LogOut, Check } from 'lucide-react'
 import { useAdmin } from '../../contexts/AdminContext'
 import { useContent } from '../../contexts/ContentContext'
 import NewPageModal from './NewPageModal'
@@ -7,9 +7,16 @@ import HistoryPanel from './HistoryPanel'
 
 export default function AdminBar() {
   const { logout } = useAdmin()
-  const { saving } = useContent()
+  const { pendingChanges, openPublish, saving, discardChanges } = useContent()
   const [newPageOpen, setNewPageOpen] = useState(false)
   const [historyOpen, setHistoryOpen] = useState(false)
+  const isDirty = pendingChanges.length > 0
+
+  function handleDiscard() {
+    const n = pendingChanges.length
+    if (!window.confirm(`Discard ${n} unsaved change${n === 1 ? '' : 's'} from this session?`)) return
+    discardChanges()
+  }
 
   return (
     <div
@@ -22,7 +29,11 @@ export default function AdminBar() {
           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
         </svg>
         <span>Admin Mode</span>
-        {saving && <span className="text-white/60 ml-2">Saving…</span>}
+        {isDirty && (
+          <span className="text-white/60 ml-2">
+            {pendingChanges.length} unsaved change{pendingChanges.length === 1 ? '' : 's'}
+          </span>
+        )}
       </div>
       <div className="flex items-center gap-3">
         <button
@@ -39,11 +50,26 @@ export default function AdminBar() {
           <History size={14} strokeWidth={2.5} />
           History
         </button>
+
         <div className="w-px h-4 bg-white/25 mx-1" />
+
+        {isDirty && (
+          <button onClick={handleDiscard} className="text-white/70 hover:text-white transition-colors">
+            Discard
+          </button>
+        )}
         <button
-          onClick={logout}
-          className="flex items-center gap-1.5 text-white/70 hover:text-white transition-colors"
+          onClick={openPublish}
+          disabled={!isDirty}
+          className="flex items-center gap-1.5 bg-white text-[#7D1426] rounded-full pl-2.5 pr-3.5 py-1.5 font-bold transition-colors disabled:bg-white/15 disabled:text-white/50"
         >
+          <Check size={14} strokeWidth={3} />
+          {saving ? 'Publishing…' : 'Publish changes'}
+        </button>
+
+        <div className="w-px h-4 bg-white/25 mx-1" />
+
+        <button onClick={logout} className="flex items-center gap-1.5 text-white/70 hover:text-white transition-colors">
           <LogOut size={14} strokeWidth={2.5} />
           Sign out
         </button>

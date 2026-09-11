@@ -11,10 +11,8 @@ export default function EditModal({ title, sectionKey, fields, initialData, onCl
   }
 
   function handleSave() {
+    saveSection(sectionKey, data)
     onClose()
-    saveSection(sectionKey, data).catch((err) => {
-      if (err.message !== 'cancelled') alert('Failed to save. Please try again.')
-    })
   }
 
   return (
@@ -25,7 +23,7 @@ export default function EditModal({ title, sectionKey, fields, initialData, onCl
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0">
           <div>
             <p className="font-black text-gray-900 text-sm">{title}</p>
-            <p className="text-xs text-gray-400 mt-0.5">You'll confirm your password and describe the change before it goes live</p>
+            <p className="text-xs text-gray-400 mt-0.5">Saved to your draft — use "Publish changes" when you're ready to go live</p>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition-colors p-1">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -52,7 +50,7 @@ export default function EditModal({ title, sectionKey, fields, initialData, onCl
             className="flex-1 py-2.5 text-sm font-semibold text-white rounded-xl transition-colors"
             style={{ background: '#7D1426' }}
           >
-            Continue
+            Save
           </button>
         </div>
       </div>

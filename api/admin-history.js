@@ -1,10 +1,8 @@
 import crypto from 'node:crypto'
-import { put, list } from '@vercel/blob'
-import { appendHistory } from './admin-content.js'
+import { list } from '@vercel/blob'
 
 const { ADMIN_SECRET = 'tie-austin-cms-secret' } = process.env
 const TOKEN_TTL = 24 * 60 * 60 * 1000
-const BLOB_PATH = 'site-content.json'
 const HISTORY_PATH = 'site-content-history.json'
 
 function verifyToken(authHeader) {
@@ -31,6 +29,9 @@ async function readBlob(pathname) {
   }
 }
 
+// Read-only: returns the change list, or a single snapshot's full content
+// (via ?id=) so the client can load it into the local draft. Nothing is
+// written here — publishing (POST /api/admin-content) is what persists.
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store')
 
@@ -38,35 +39,19 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
-  if (req.method === 'GET') {
-    const history = (await readBlob(HISTORY_PATH)) || []
-    const summary = history.map(({ id, message, timestamp }) => ({ id, message, timestamp }))
-    return res.status(200).json(summary)
+  if (req.method !== 'GET') {
+    return res.status(405).end()
   }
 
-  if (req.method === 'POST') {
-    const { id, message } = req.body ?? {}
-    if (!id) return res.status(400).json({ error: 'Missing id' })
-    try {
-      const history = (await readBlob(HISTORY_PATH)) || []
-      const entry = history.find((e) => e.id === id)
-      if (!entry) return res.status(404).json({ error: 'Not found' })
+  const history = (await readBlob(HISTORY_PATH)) || []
+  const { id } = req.query
 
-      await put(BLOB_PATH, JSON.stringify(entry.content), {
-        access: 'public',
-        contentType: 'application/json',
-        addRandomSuffix: false,
-      })
-      await appendHistory({
-        message: (message && message.trim()) || `Revert to "${entry.message}"`,
-        content: entry.content,
-      })
-
-      return res.status(200).json({ content: entry.content })
-    } catch (err) {
-      return res.status(500).json({ error: err.message })
-    }
+  if (id) {
+    const entry = history.find((e) => e.id === id)
+    if (!entry) return res.status(404).json({ error: 'Not found' })
+    return res.status(200).json(entry)
   }
 
-  res.status(405).end()
+  const summary = history.map(({ id: entryId, message, timestamp }) => ({ id: entryId, message, timestamp }))
+  return res.status(200).json(summary)
 }

@@ -25,7 +25,7 @@ function ScrollToTop() {
 
 function AppShell() {
   const { isAdmin } = useAdmin()
-  const { pendingCommit } = useContent()
+  const { publishOpen } = useContent()
   const [loginOpen, setLoginOpen] = useState(false)
 
   return (
@@ -48,7 +48,7 @@ function AppShell() {
       <Footer onAdminClick={() => setLoginOpen(true)} />
       {isAdmin && <AdminBar />}
       {loginOpen && !isAdmin && <LoginModal onClose={() => setLoginOpen(false)} />}
-      {isAdmin && pendingCommit && <CommitModal />}
+      {isAdmin && publishOpen && <CommitModal />}
     </div>
   )
 }

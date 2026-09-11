@@ -20,20 +20,15 @@ export default function PageSettingsModal({ page, onClose }) {
       setError(err)
       return
     }
+    renamePage(page.id, { title: title.trim(), slug })
     onClose()
-    renamePage(page.id, { title: title.trim(), slug }).catch((e) => {
-      if (e.message !== 'cancelled') alert('Failed to save. Please try again.')
-    })
   }
 
   function handleDelete() {
     if (!window.confirm(`Delete the page "${page.title}"? You can restore it later from History.`)) return
-    onClose()
     deletePage(page.id)
-      .then(() => navigate('/'))
-      .catch((e) => {
-        if (e.message !== 'cancelled') alert('Failed to delete. Please try again.')
-      })
+    onClose()
+    navigate('/')
   }
 
   return (
@@ -80,7 +75,7 @@ export default function PageSettingsModal({ page, onClose }) {
             className="flex-1 py-2.5 text-sm font-semibold text-white rounded-xl transition-colors"
             style={{ background: '#7D1426' }}
           >
-            Continue
+            Save
           </button>
         </div>
 

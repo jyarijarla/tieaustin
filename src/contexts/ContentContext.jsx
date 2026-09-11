@@ -17,86 +17,49 @@ function makeId() {
 export function ContentProvider({ children }) {
   const { token } = useAdmin()
   const [content, setContent] = useState(defaults)
+  const savedContentRef = useRef(defaults)
+  const [pendingChanges, setPendingChanges] = useState([])
   const [saving, setSaving] = useState(false)
-  const [pendingCommit, setPendingCommit] = useState(null)
-  const commitDeferred = useRef(null)
+  const [publishOpen, setPublishOpen] = useState(false)
 
   useEffect(() => {
     fetch('/api/admin-content')
       .then((r) => r.json())
       .then((remote) => {
-        if (remote) setContent(merge(defaults, remote))
+        if (remote) {
+          const merged = merge(defaults, remote)
+          setContent(merged)
+          savedContentRef.current = merged
+        }
       })
       .catch(() => {})
   }, [])
 
-  const updateSection = useCallback((section, data) => {
-    setContent((prev) => ({ ...prev, [section]: data }))
-  }, [])
-
-  // Opens the password + commit-message confirmation flow. `run(message, token)`
-  // performs the actual API call once the user confirms; it should return the
-  // resulting full content object (or leave content untouched and update via setContent itself).
-  const requestCommit = useCallback(({ description, defaultMessage, run }) => {
-    return new Promise((resolve, reject) => {
-      commitDeferred.current = { resolve, reject }
-      setPendingCommit({ description, defaultMessage, run })
-    })
-  }, [])
-
-  const confirmCommit = useCallback(async (message, freshToken) => {
-    setSaving(true)
-    try {
-      await pendingCommit.run(message, freshToken)
-      commitDeferred.current?.resolve()
-      setPendingCommit(null)
-    } finally {
-      setSaving(false)
+  useEffect(() => {
+    if (pendingChanges.length === 0) return
+    function handleBeforeUnload(e) {
+      e.preventDefault()
+      e.returnValue = ''
     }
-  }, [pendingCommit])
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [pendingChanges.length])
 
-  const cancelCommit = useCallback(() => {
-    commitDeferred.current?.reject(new Error('cancelled'))
-    setPendingCommit(null)
-  }, [])
-
-  async function postContent(nextContent, message, tok) {
-    const res = await fetch('/api/admin-content', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${tok}`,
-      },
-      body: JSON.stringify({ content: nextContent, message }),
-    })
-    if (!res.ok) throw new Error('Save failed')
-    return nextContent
+  // Stages an edit locally (no network call). It only becomes live once
+  // the admin reviews everything staged this session and hits Publish.
+  function stage(next, description) {
+    setContent(next)
+    setPendingChanges((prev) => [...prev, description])
   }
 
   const saveSection = useCallback((section, data) => {
-    const next = { ...content, [section]: data }
-    return requestCommit({
-      description: `Editing the ${section} section`,
-      defaultMessage: `Update ${section} section`,
-      run: async (message, tok) => {
-        await postContent(next, message, tok)
-        setContent(next)
-      },
-    })
-  }, [content, requestCommit])
+    stage({ ...content, [section]: data }, `Update ${section} section`)
+  }, [content])
 
   const addPage = useCallback(({ title, slug }) => {
     const page = { id: makeId(), title, slug, navLabel: title, sections: [] }
-    const next = { ...content, pages: [...(content.pages || []), page] }
-    return requestCommit({
-      description: `Adding a new page`,
-      defaultMessage: `Add page "${title}"`,
-      run: async (message, tok) => {
-        await postContent(next, message, tok)
-        setContent(next)
-      },
-    })
-  }, [content, requestCommit])
+    stage({ ...content, pages: [...(content.pages || []), page] }, `Add page "${title}"`)
+  }, [content])
 
   const renamePage = useCallback((pageId, { title, slug }) => {
     const page = content.pages.find((p) => p.id === pageId)
@@ -104,28 +67,14 @@ export function ContentProvider({ children }) {
       ...content,
       pages: content.pages.map((p) => (p.id === pageId ? { ...p, title, slug, navLabel: title } : p)),
     }
-    return requestCommit({
-      description: `Editing page settings`,
-      defaultMessage: `Edit page "${page?.title}" settings`,
-      run: async (message, tok) => {
-        await postContent(next, message, tok)
-        setContent(next)
-      },
-    })
-  }, [content, requestCommit])
+    stage(next, `Edit page "${page?.title}" settings`)
+  }, [content])
 
   const deletePage = useCallback((pageId) => {
     const page = content.pages.find((p) => p.id === pageId)
     const next = { ...content, pages: content.pages.filter((p) => p.id !== pageId) }
-    return requestCommit({
-      description: `Deleting a page`,
-      defaultMessage: `Delete page "${page?.title}"`,
-      run: async (message, tok) => {
-        await postContent(next, message, tok)
-        setContent(next)
-      },
-    })
-  }, [content, requestCommit])
+    stage(next, `Delete page "${page?.title}"`)
+  }, [content])
 
   const addSection = useCallback((pageId, index, type, data) => {
     const page = content.pages.find((p) => p.id === pageId)
@@ -137,15 +86,8 @@ export function ContentProvider({ children }) {
       pages: content.pages.map((p) => (p.id === pageId ? { ...p, sections } : p)),
     }
     const typeLabel = getSectionType(type)?.label || type
-    return requestCommit({
-      description: `Adding a section to "${page.title}"`,
-      defaultMessage: `Add ${typeLabel} section to "${page.title}"`,
-      run: async (message, tok) => {
-        await postContent(next, message, tok)
-        setContent(next)
-      },
-    })
-  }, [content, requestCommit])
+    stage(next, `Add ${typeLabel} section to "${page.title}"`)
+  }, [content])
 
   const updateSectionData = useCallback((pageId, sectionId, data) => {
     const page = content.pages.find((p) => p.id === pageId)
@@ -157,15 +99,8 @@ export function ContentProvider({ children }) {
           : p
       ),
     }
-    return requestCommit({
-      description: `Editing a section on "${page.title}"`,
-      defaultMessage: `Edit section on "${page.title}"`,
-      run: async (message, tok) => {
-        await postContent(next, message, tok)
-        setContent(next)
-      },
-    })
-  }, [content, requestCommit])
+    stage(next, `Edit section on "${page.title}"`)
+  }, [content])
 
   const deleteSection = useCallback((pageId, sectionId) => {
     const page = content.pages.find((p) => p.id === pageId)
@@ -175,35 +110,49 @@ export function ContentProvider({ children }) {
         p.id === pageId ? { ...p, sections: p.sections.filter((s) => s.id !== sectionId) } : p
       ),
     }
-    return requestCommit({
-      description: `Removing a section from "${page.title}"`,
-      defaultMessage: `Remove section from "${page.title}"`,
-      run: async (message, tok) => {
-        await postContent(next, message, tok)
-        setContent(next)
-      },
-    })
-  }, [content, requestCommit])
+    stage(next, `Remove section from "${page.title}"`)
+  }, [content])
 
-  const rollback = useCallback((historyId, entryMessage) => {
-    return requestCommit({
-      description: `Restoring a previous version`,
-      defaultMessage: `Revert to "${entryMessage}"`,
-      run: async (message, tok) => {
-        const res = await fetch('/api/admin-history', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${tok}`,
-          },
-          body: JSON.stringify({ id: historyId, message }),
-        })
-        if (!res.ok) throw new Error('Restore failed')
-        const { content: restored } = await res.json()
-        setContent(restored)
-      },
+  // Loads a past snapshot into the local draft. Nothing is written until Publish.
+  const rollback = useCallback(async (historyId, entryMessage) => {
+    const res = await fetch(`/api/admin-history?id=${historyId}`, {
+      headers: { Authorization: `Bearer ${token}` },
     })
-  }, [requestCommit])
+    if (!res.ok) throw new Error('Failed to load that version')
+    const entry = await res.json()
+    stage(entry.content, `Revert to "${entryMessage}"`)
+  }, [token])
+
+  const discardChanges = useCallback(() => {
+    setContent(savedContentRef.current)
+    setPendingChanges([])
+  }, [])
+
+  const openPublish = useCallback(() => setPublishOpen(true), [])
+  const closePublish = useCallback(() => setPublishOpen(false), [])
+
+  const publish = useCallback(async (message, freshToken) => {
+    setSaving(true)
+    try {
+      const res = await fetch('/api/admin-content', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${freshToken}`,
+        },
+        body: JSON.stringify({ content, message }),
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error || 'Save failed')
+      }
+      savedContentRef.current = content
+      setPendingChanges([])
+      setPublishOpen(false)
+    } finally {
+      setSaving(false)
+    }
+  }, [content])
 
   async function uploadImage(file) {
     return new Promise((resolve, reject) => {
@@ -232,13 +181,15 @@ export function ContentProvider({ children }) {
     <ContentContext.Provider
       value={{
         content,
-        updateSection,
         saveSection,
+        pendingChanges,
         saving,
         uploadImage,
-        pendingCommit,
-        confirmCommit,
-        cancelCommit,
+        publishOpen,
+        openPublish,
+        closePublish,
+        publish,
+        discardChanges,
         addPage,
         renamePage,
         deletePage,

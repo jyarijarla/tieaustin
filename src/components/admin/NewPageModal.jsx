@@ -27,12 +27,9 @@ export default function NewPageModal({ onClose }) {
       setError(err)
       return
     }
-    onClose()
     addPage({ title: title.trim(), slug: finalSlug })
-      .then(() => navigate(`/${finalSlug}`))
-      .catch((e) => {
-        if (e.message !== 'cancelled') alert('Failed to create page. Please try again.')
-      })
+    onClose()
+    navigate(`/${finalSlug}`)
   }
 
   return (
@@ -40,7 +37,7 @@ export default function NewPageModal({ onClose }) {
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-8">
         <div className="mb-6">
           <p className="font-black text-gray-900 text-sm">New page</p>
-          <p className="text-xs text-gray-400 mt-0.5">You can add sections to it once it's created</p>
+          <p className="text-xs text-gray-400 mt-0.5">Added to your draft — publish when you're ready to go live</p>
         </div>
 
         <div className="space-y-4">
@@ -83,7 +80,7 @@ export default function NewPageModal({ onClose }) {
             className="flex-1 py-2.5 text-sm font-semibold text-white rounded-xl transition-colors"
             style={{ background: '#7D1426' }}
           >
-            Continue
+            Create page
           </button>
         </div>
       </div>

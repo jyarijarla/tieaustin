@@ -43,9 +43,7 @@ export default function DynamicPage() {
 
   function handleDelete(section) {
     if (!window.confirm('Remove this section?')) return
-    deleteSection(page.id, section.id).catch((err) => {
-      if (err.message !== 'cancelled') alert('Failed to delete. Please try again.')
-    })
+    deleteSection(page.id, section.id)
   }
 
   return (
