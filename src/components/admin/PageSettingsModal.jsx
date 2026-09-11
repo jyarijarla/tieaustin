@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useContent } from '../../contexts/ContentContext'
+import { useUI } from '../../contexts/UIContext'
 import { slugify, validateSlug } from './pageValidation'
 
 export default function PageSettingsModal({ page, onClose }) {
   const { content, renamePage, deletePage } = useContent()
+  const { confirm } = useUI()
   const navigate = useNavigate()
   const [title, setTitle] = useState(page.title)
   const [slug, setSlug] = useState(page.slug)
@@ -24,8 +26,13 @@ export default function PageSettingsModal({ page, onClose }) {
     onClose()
   }
 
-  function handleDelete() {
-    if (!window.confirm(`Delete the page "${page.title}"? You can restore it later from History.`)) return
+  async function handleDelete() {
+    const ok = await confirm({
+      title: 'Delete this page?',
+      message: `Delete the page "${page.title}"? You can restore it later from History.`,
+      confirmLabel: 'Delete',
+    })
+    if (!ok) return
     deletePage(page.id)
     onClose()
     navigate('/')

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAdmin } from '../../contexts/AdminContext'
 import { useContent } from '../../contexts/ContentContext'
+import { useUI } from '../../contexts/UIContext'
 
 function timeAgo(ts) {
   const diff = Math.max(0, Date.now() - ts)
@@ -16,6 +17,7 @@ function timeAgo(ts) {
 export default function HistoryPanel({ onClose }) {
   const { token } = useAdmin()
   const { rollback, pendingChanges } = useContent()
+  const { confirm, notify } = useUI()
   const [entries, setEntries] = useState(null)
   const [error, setError] = useState('')
   const [restoring, setRestoring] = useState(false)
@@ -34,13 +36,19 @@ export default function HistoryPanel({ onClose }) {
     const warning = pendingChanges.length > 0
       ? ` This replaces your ${pendingChanges.length} unpublished change${pendingChanges.length === 1 ? '' : 's'} in this session.`
       : ''
-    if (!window.confirm(`Load "${entry.message}" (${timeAgo(entry.timestamp)}) into your draft?${warning} You'll still need to publish to make it live.`)) return
+    const ok = await confirm({
+      title: 'Load this version?',
+      message: `Load "${entry.message}" (${timeAgo(entry.timestamp)}) into your draft?${warning} You'll still need to publish to make it live.`,
+      confirmLabel: 'Load',
+      tone: 'default',
+    })
+    if (!ok) return
     setRestoring(true)
     try {
       await rollback(entry.id, entry.message)
       onClose()
     } catch (e) {
-      alert(e.message || 'Failed to load that version. Please try again.')
+      notify(e.message || 'Failed to load that version. Please try again.')
     } finally {
       setRestoring(false)
     }

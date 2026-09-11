@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react'
+import { useUI } from '../../contexts/UIContext'
 
 // field types: text | textarea | image | array-of-objects
 
 export function ImageField({ label, value, onChange, uploadImage }) {
+  const { notify } = useUI()
   const [uploading, setUploading] = useState(false)
   const inputRef = useRef(null)
 
@@ -14,7 +16,7 @@ export function ImageField({ label, value, onChange, uploadImage }) {
       const url = await uploadImage(file)
       onChange(url)
     } catch {
-      alert('Image upload failed. Please try again.')
+      notify('Image upload failed. Please try again.')
     } finally {
       setUploading(false)
     }

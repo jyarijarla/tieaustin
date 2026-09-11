@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useContent } from '../contexts/ContentContext'
 import { useAdmin } from '../contexts/AdminContext'
+import { useUI } from '../contexts/UIContext'
 import SectionRenderer from '../components/dynamic/SectionRenderer'
 import SectionModal from '../components/admin/SectionModal'
 import PageSettingsModal from '../components/admin/PageSettingsModal'
@@ -27,6 +28,7 @@ export default function DynamicPage() {
   const { slug } = useParams()
   const { content, deleteSection } = useContent()
   const { isAdmin } = useAdmin()
+  const { confirm } = useUI()
   const [addAt, setAddAt] = useState(null)
   const [editingSection, setEditingSection] = useState(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -41,8 +43,13 @@ export default function DynamicPage() {
     )
   }
 
-  function handleDelete(section) {
-    if (!window.confirm('Remove this section?')) return
+  async function handleDelete(section) {
+    const ok = await confirm({
+      title: 'Remove this section?',
+      message: 'This removes it from your draft. It stays out once you publish.',
+      confirmLabel: 'Remove',
+    })
+    if (!ok) return
     deleteSection(page.id, section.id)
   }
 

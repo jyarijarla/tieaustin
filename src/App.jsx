@@ -2,11 +2,14 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { AdminProvider, useAdmin } from './contexts/AdminContext'
 import { ContentProvider, useContent } from './contexts/ContentContext'
+import { UIProvider } from './contexts/UIContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import AdminBar from './components/admin/AdminBar'
 import LoginModal from './components/admin/LoginModal'
 import CommitModal from './components/admin/CommitModal'
+import ConfirmDialog from './components/admin/ConfirmDialog'
+import ToastStack from './components/admin/ToastStack'
 import Home from './pages/Home'
 import AboutPage from './pages/About'
 import TeamPage from './pages/Team'
@@ -49,16 +52,20 @@ function AppShell() {
       {isAdmin && <AdminBar />}
       {loginOpen && !isAdmin && <LoginModal onClose={() => setLoginOpen(false)} />}
       {isAdmin && publishOpen && <CommitModal />}
+      <ConfirmDialog />
+      <ToastStack />
     </div>
   )
 }
 
 export default function App() {
   return (
-    <AdminProvider>
-      <ContentProvider>
-        <AppShell />
-      </ContentProvider>
-    </AdminProvider>
+    <UIProvider>
+      <AdminProvider>
+        <ContentProvider>
+          <AppShell />
+        </ContentProvider>
+      </AdminProvider>
+    </UIProvider>
   )
 }

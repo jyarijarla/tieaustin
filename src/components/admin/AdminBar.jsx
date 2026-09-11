@@ -2,20 +2,26 @@ import { useState } from 'react'
 import { Plus, History, LogOut, Check } from 'lucide-react'
 import { useAdmin } from '../../contexts/AdminContext'
 import { useContent } from '../../contexts/ContentContext'
+import { useUI } from '../../contexts/UIContext'
 import NewPageModal from './NewPageModal'
 import HistoryPanel from './HistoryPanel'
 
 export default function AdminBar() {
   const { logout } = useAdmin()
   const { pendingChanges, openPublish, saving, discardChanges } = useContent()
+  const { confirm } = useUI()
   const [newPageOpen, setNewPageOpen] = useState(false)
   const [historyOpen, setHistoryOpen] = useState(false)
   const isDirty = pendingChanges.length > 0
 
-  function handleDiscard() {
+  async function handleDiscard() {
     const n = pendingChanges.length
-    if (!window.confirm(`Discard ${n} unsaved change${n === 1 ? '' : 's'} from this session?`)) return
-    discardChanges()
+    const ok = await confirm({
+      title: 'Discard changes?',
+      message: `This discards ${n} unsaved change${n === 1 ? '' : 's'} from this session. This can't be undone.`,
+      confirmLabel: 'Discard',
+    })
+    if (ok) discardChanges()
   }
 
   return (
