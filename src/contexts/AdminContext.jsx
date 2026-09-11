@@ -24,6 +24,7 @@ export function AdminProvider({ children }) {
     localStorage.setItem(TOKEN_KEY, t)
     setToken(t)
     setIsAdmin(true)
+    return t
   }
 
   function logout() {

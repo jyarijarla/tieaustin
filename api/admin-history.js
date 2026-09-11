@@ -1,11 +1,11 @@
 import crypto from 'node:crypto'
 import { put, list } from '@vercel/blob'
+import { appendHistory } from './admin-content.js'
 
 const { ADMIN_SECRET = 'tie-austin-cms-secret' } = process.env
 const TOKEN_TTL = 24 * 60 * 60 * 1000
 const BLOB_PATH = 'site-content.json'
 const HISTORY_PATH = 'site-content-history.json'
-const HISTORY_LIMIT = 30
 
 function verifyToken(authHeader) {
   if (!authHeader?.startsWith('Bearer ')) return false
@@ -24,53 +24,45 @@ async function readBlob(pathname) {
     const { blobs } = await list({ prefix: pathname })
     const blob = blobs.find((b) => b.pathname === pathname)
     if (!blob) return null
-    const res = await fetch(`${blob.url}?t=${Date.now()}`) // bust cache
+    const res = await fetch(`${blob.url}?t=${Date.now()}`)
     return res.json()
   } catch {
     return null
   }
 }
 
-async function readContent() {
-  return readBlob(BLOB_PATH)
-}
-
-export async function appendHistory({ message, content }) {
-  const history = (await readBlob(HISTORY_PATH)) || []
-  const entry = { id: crypto.randomUUID(), message, timestamp: Date.now(), content }
-  const next = [entry, ...history].slice(0, HISTORY_LIMIT)
-  await put(HISTORY_PATH, JSON.stringify(next), {
-    access: 'public',
-    contentType: 'application/json',
-    addRandomSuffix: false,
-  })
-  return entry
-}
-
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store')
 
+  if (!verifyToken(req.headers.authorization)) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
   if (req.method === 'GET') {
-    const content = await readContent()
-    return res.status(200).json(content)
+    const history = (await readBlob(HISTORY_PATH)) || []
+    const summary = history.map(({ id, message, timestamp }) => ({ id, message, timestamp }))
+    return res.status(200).json(summary)
   }
 
   if (req.method === 'POST') {
-    if (!verifyToken(req.headers.authorization)) {
-      return res.status(401).json({ error: 'Unauthorized' })
-    }
-    const { content, message } = req.body ?? {}
-    if (!content || typeof message !== 'string' || !message.trim()) {
-      return res.status(400).json({ error: 'Missing content or commit message' })
-    }
+    const { id, message } = req.body ?? {}
+    if (!id) return res.status(400).json({ error: 'Missing id' })
     try {
-      await put(BLOB_PATH, JSON.stringify(content), {
+      const history = (await readBlob(HISTORY_PATH)) || []
+      const entry = history.find((e) => e.id === id)
+      if (!entry) return res.status(404).json({ error: 'Not found' })
+
+      await put(BLOB_PATH, JSON.stringify(entry.content), {
         access: 'public',
         contentType: 'application/json',
         addRandomSuffix: false,
       })
-      await appendHistory({ message: message.trim(), content })
-      return res.status(200).json({ ok: true })
+      await appendHistory({
+        message: (message && message.trim()) || `Revert to "${entry.message}"`,
+        content: entry.content,
+      })
+
+      return res.status(200).json({ content: entry.content })
     } catch (err) {
       return res.status(500).json({ error: err.message })
     }

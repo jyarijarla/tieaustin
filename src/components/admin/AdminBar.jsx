@@ -1,9 +1,14 @@
+import { useState } from 'react'
 import { useAdmin } from '../../contexts/AdminContext'
 import { useContent } from '../../contexts/ContentContext'
+import NewPageModal from './NewPageModal'
+import HistoryPanel from './HistoryPanel'
 
 export default function AdminBar() {
   const { logout } = useAdmin()
   const { saving } = useContent()
+  const [newPageOpen, setNewPageOpen] = useState(false)
+  const [historyOpen, setHistoryOpen] = useState(false)
 
   return (
     <div
@@ -18,12 +23,19 @@ export default function AdminBar() {
         <span>Admin Mode</span>
         {saving && <span className="text-white/60 ml-2">Saving…</span>}
       </div>
-      <button
-        onClick={logout}
-        className="text-white/70 hover:text-white transition-colors"
-      >
-        Sign out
-      </button>
+      <div className="flex items-center gap-5">
+        <button onClick={() => setNewPageOpen(true)} className="text-white/70 hover:text-white transition-colors">
+          New page
+        </button>
+        <button onClick={() => setHistoryOpen(true)} className="text-white/70 hover:text-white transition-colors">
+          History
+        </button>
+        <button onClick={logout} className="text-white/70 hover:text-white transition-colors">
+          Sign out
+        </button>
+      </div>
+      {newPageOpen && <NewPageModal onClose={() => setNewPageOpen(false)} />}
+      {historyOpen && <HistoryPanel onClose={() => setHistoryOpen(false)} />}
     </div>
   )
 }

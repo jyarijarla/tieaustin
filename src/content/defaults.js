@@ -1,4 +1,6 @@
 export const defaults = {
+  pages: [],
+
   stats: [
     { value: '10,000+', label: 'Startups' },
     { value: '80,000+', label: 'Attendees' },

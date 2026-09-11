@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import { useContent } from '../contexts/ContentContext'
 
 const navLinks = [
   {
@@ -21,6 +22,14 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
+  const { content } = useContent()
+
+  const dynamicLinks = (content?.pages || []).map((p) => ({
+    label: p.navLabel || p.title,
+    to: `/${p.slug}`,
+    external: false,
+  }))
+  const allLinks = [...navLinks, ...dynamicLinks]
 
   const baseLinkClass = 'text-[13px] font-medium transition-colors text-gray-500 hover:text-gray-900'
   const activeLinkClass = 'text-[13px] font-medium transition-colors text-tie-red'
@@ -41,7 +50,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-7">
-          {navLinks.map((l) => {
+          {allLinks.map((l) => {
             if (l.dropdown) {
               return (
                 <div
@@ -134,7 +143,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open && (
         <div className="md:hidden border-t border-gray-100 bg-white">
-          {navLinks.map((l) => {
+          {allLinks.map((l) => {
             if (l.dropdown) {
               return (
                 <div key={l.label}>
