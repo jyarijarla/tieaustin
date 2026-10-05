@@ -32,13 +32,15 @@ async function getAccessToken() {
   return data.access_token
 }
 
-function parseDate(dateStr) {
+function parseDate(dateStr, timeZone = 'America/Chicago') {
   if (!dateStr) return { day: '—', month: '—', year: '—', iso: null }
   const d = new Date(dateStr)
+  // format in the event's timezone — the server runs in UTC, so evening events would shift a day
+  const fmt = (opts) => d.toLocaleString('en-US', { timeZone, ...opts })
   return {
-    day: d.getDate().toString(),
-    month: d.toLocaleString('en-US', { month: 'short' }),
-    year: d.getFullYear().toString(),
+    day: fmt({ day: 'numeric' }),
+    month: fmt({ month: 'short' }),
+    year: fmt({ year: 'numeric' }),
     iso: d.toISOString(),
   }
 }
@@ -60,18 +62,25 @@ export default async function handler(req, res) {
     const data = await zohoRes.json()
     const now = Date.now()
 
-    const events = (data.events ?? []).map((e) => {
+    // status=all also returns drafts (e.g. copied or superseded events) — only show
+    // events that are live or finished, and drop canceled ones
+    const visible = (data.events ?? []).filter(
+      (e) => ['published', 'completed'].includes(e.status_string) && !e.canceled_on
+    )
+
+    const events = visible.map((e) => {
       const startMs = e.start_time ? new Date(e.start_time).getTime() : null
       const endMs = e.end_time ? new Date(e.end_time).getTime() : startMs
       return {
         id: e.id,
         title: e.name,
-        location: e.venues?.[0]
-          ? [e.venues[0].name, e.venues[0].city].filter(Boolean).join(' · ')
+        location: e.venue
+          ? [e.venue.name, e.venue.city].filter(Boolean).join(' · ')
           : '',
         desc: e.summary ?? e.description ?? '',
-        date: parseDate(e.start_time),
+        date: parseDate(e.start_time, e.timezone || undefined),
         url: e.website_url ?? null,
+        image: e.thumbnail_url ?? null,
         isPast: endMs !== null ? endMs < now : false,
       }
     })

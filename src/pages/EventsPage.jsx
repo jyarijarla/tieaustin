@@ -19,23 +19,39 @@ function PinIcon() {
 }
 
 function EventCard({ e }) {
+  const dateBlock = (
+    <div
+      className={`shrink-0 flex flex-col items-center justify-center rounded-lg w-12 h-14 text-center ${e.image ? 'absolute top-2 left-2 shadow-md' : ''}`}
+      style={{ background: e.isPast ? '#f9fafb' : '#7D1426', border: e.isPast ? '1px solid #e5e7eb' : 'none' }}
+    >
+      <span className="text-lg font-black leading-none tabular-nums" style={{ color: e.isPast ? '#111827' : '#fff' }}>
+        {e.date.day}
+      </span>
+      <span className="text-[9px] font-bold tracking-widest uppercase mt-0.5" style={{ color: e.isPast ? '#7D1426' : 'rgba(255,255,255,0.75)' }}>
+        {e.date.month}
+      </span>
+      <span className="text-[8px] mt-px" style={{ color: e.isPast ? '#9ca3af' : 'rgba(255,255,255,0.5)' }}>
+        {e.date.year}
+      </span>
+    </div>
+  )
+
   const card = (
-    <div className="group bg-white border border-gray-200 rounded-xl p-5 flex gap-5 items-start hover:border-[#7D1426]/30 hover:shadow-sm transition-all">
-      {/* Date block */}
-      <div
-        className="shrink-0 flex flex-col items-center justify-center rounded-lg w-12 h-14 text-center"
-        style={{ background: e.isPast ? '#f9fafb' : '#7D1426', border: e.isPast ? '1px solid #e5e7eb' : 'none' }}
-      >
-        <span className="text-lg font-black leading-none tabular-nums" style={{ color: e.isPast ? '#111827' : '#fff' }}>
-          {e.date.day}
-        </span>
-        <span className="text-[9px] font-bold tracking-widest uppercase mt-0.5" style={{ color: e.isPast ? '#7D1426' : 'rgba(255,255,255,0.75)' }}>
-          {e.date.month}
-        </span>
-        <span className="text-[8px] mt-px" style={{ color: e.isPast ? '#9ca3af' : 'rgba(255,255,255,0.5)' }}>
-          {e.date.year}
-        </span>
-      </div>
+    <div className="group bg-white border border-gray-200 rounded-xl p-5 flex flex-col sm:flex-row gap-5 sm:items-start hover:border-[#7D1426]/30 hover:shadow-sm transition-all">
+      {/* Thumbnail with date overlaid, or date block alone */}
+      {e.image ? (
+        <div className="relative shrink-0 w-full sm:w-52 aspect-video rounded-lg overflow-hidden bg-gray-100">
+          <img
+            src={e.image}
+            alt=""
+            loading="lazy"
+            className={`w-full h-full object-cover ${e.isPast ? 'grayscale-40' : ''}`}
+          />
+          {dateBlock}
+        </div>
+      ) : (
+        dateBlock
+      )}
 
       {/* Body */}
       <div className="flex-1 min-w-0">
@@ -54,7 +70,7 @@ function EventCard({ e }) {
 
       {/* Chevron */}
       {e.url && (
-        <div className="shrink-0 self-center text-gray-300 group-hover:text-[#7D1426] transition-colors text-base leading-none">
+        <div className="hidden sm:block shrink-0 self-center text-gray-300 group-hover:text-[#7D1426] transition-colors text-base leading-none">
           →
         </div>
       )}
