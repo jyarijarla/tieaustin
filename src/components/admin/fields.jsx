@@ -30,14 +30,14 @@ export function ImageField({ label, value, onChange, uploadImage }) {
           <img
             src={value}
             alt=""
-            className="w-16 h-16 object-cover rounded-lg border border-gray-200 shrink-0"
+            className="w-16 h-16 object-cover rounded-md border border-gray-200 shrink-0"
           />
         )}
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="px-4 py-2 text-xs font-semibold border border-gray-200 rounded-lg hover:border-gray-400 transition-colors disabled:opacity-50"
+          className="px-4 py-2 text-xs font-semibold border border-gray-200 rounded-md hover:border-gray-400 transition-colors disabled:opacity-50"
         >
           {uploading ? 'Uploading…' : 'Choose image'}
         </button>
@@ -56,14 +56,14 @@ export function TextField({ label, value, onChange, multiline }) {
           rows={3}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-lg outline-none focus:border-[#7D1426] transition-colors resize-y"
+          className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-md outline-none focus:border-[#7D1426] transition-colors resize-y"
         />
       ) : (
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-lg outline-none focus:border-[#7D1426] transition-colors"
+          className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-md outline-none focus:border-[#7D1426] transition-colors"
         />
       )}
     </div>
@@ -87,7 +87,7 @@ export function FieldsEditor({ fields, data, setField, uploadImage, activeTab, o
               key={i}
               type="button"
               onClick={() => setTab(i)}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
                 tab === i ? 'text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
               style={tab === i ? { background: '#7D1426' } : {}}

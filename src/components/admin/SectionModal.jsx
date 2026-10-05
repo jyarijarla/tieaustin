@@ -34,7 +34,7 @@ export default function SectionModal({ mode, page, section, index, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg flex flex-col max-h-full">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg flex flex-col max-h-full">
 
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0">
           <div>
@@ -55,7 +55,7 @@ export default function SectionModal({ mode, page, section, index, onClose }) {
               <select
                 value={type}
                 onChange={(e) => handleTypeChange(e.target.value)}
-                className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-lg outline-none focus:border-[#7D1426] transition-colors"
+                className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-md outline-none focus:border-[#7D1426] transition-colors"
               >
                 {SECTION_TYPES.map((t) => (
                   <option key={t.type} value={t.type}>{t.label}</option>
@@ -76,13 +76,13 @@ export default function SectionModal({ mode, page, section, index, onClose }) {
         <div className="flex gap-3 px-6 py-5 border-t border-gray-100 shrink-0">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 text-sm font-semibold text-gray-500 border border-gray-200 rounded-xl hover:border-gray-300 transition-colors"
+            className="flex-1 py-2.5 text-sm font-semibold text-gray-500 border border-gray-200 rounded-md hover:border-gray-300 transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 py-2.5 text-sm font-semibold text-white rounded-xl transition-colors"
+            className="flex-1 py-2.5 text-sm font-semibold text-white rounded-md transition-colors"
             style={{ background: '#7D1426' }}
           >
             Save

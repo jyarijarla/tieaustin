@@ -23,7 +23,7 @@ export default function SectionRenderer({ section }) {
     if (!data.src) return null
     return (
       <div className="max-w-3xl mx-auto px-6 py-8">
-        <img src={data.src} alt={data.caption || ''} className="w-full rounded-xl" />
+        <img src={data.src} alt={data.caption || ''} className="w-full rounded-md" />
         {data.caption && <p className="text-center text-xs text-gray-400 mt-2">{data.caption}</p>}
       </div>
     )
@@ -46,8 +46,8 @@ export default function SectionRenderer({ section }) {
     return (
       <div className="max-w-5xl mx-auto px-6 py-10 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
         {data.map((c, i) => (
-          <div key={i} className="border border-gray-100 rounded-2xl p-6">
-            {c.image && <img src={c.image} alt="" className="w-full h-32 object-cover rounded-lg mb-4" />}
+          <div key={i} className="border border-gray-100 rounded-lg p-6">
+            {c.image && <img src={c.image} alt="" className="w-full h-32 object-cover rounded-md mb-4" />}
             <p className="font-black text-gray-900 mb-2">{c.title}</p>
             <p className="text-sm text-gray-500">{c.desc}</p>
           </div>

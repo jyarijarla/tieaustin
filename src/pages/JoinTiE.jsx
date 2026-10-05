@@ -227,7 +227,7 @@ function MembershipCard({ cat }) {
   const content = cat.tabs[activeTab]
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 flex flex-col">
+    <div className="rounded-lg overflow-hidden bg-white shadow-sm border border-gray-100 flex flex-col">
       {/* Header */}
       <div
         className="relative flex flex-col justify-end p-6 overflow-hidden"
@@ -246,7 +246,7 @@ function MembershipCard({ cat }) {
           href={APPLY_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute bottom-5 right-5 z-10 bg-tie-red text-white text-[11px] font-black tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-tie-red-dark transition-colors whitespace-nowrap shadow-lg"
+          className="absolute bottom-5 right-5 z-10 bg-tie-red text-white text-[11px] font-black tracking-widest uppercase px-5 py-2.5 rounded-md hover:bg-tie-red-dark transition-colors whitespace-nowrap shadow-lg"
         >
           Apply Now
         </a>

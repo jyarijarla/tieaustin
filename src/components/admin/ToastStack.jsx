@@ -10,7 +10,7 @@ export default function ToastStack() {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`flex items-start gap-3 rounded-xl shadow-lg px-4 py-3 text-sm text-white ${
+          className={`flex items-start gap-3 rounded-md shadow-lg px-4 py-3 text-sm text-white ${
             t.type === 'success' ? 'bg-emerald-600' : 'bg-red-600'
           }`}
         >

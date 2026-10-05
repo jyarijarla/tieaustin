@@ -56,7 +56,7 @@ export default function HistoryPanel({ onClose }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg flex flex-col max-h-full">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg flex flex-col max-h-full">
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0">
           <div>
             <p className="font-black text-gray-900 text-sm">Change history</p>
@@ -74,7 +74,7 @@ export default function HistoryPanel({ onClose }) {
           {!entries && !error && <p className="text-sm text-gray-400">Loading…</p>}
           {entries && entries.length === 0 && <p className="text-sm text-gray-400">No saved changes yet.</p>}
           {entries?.map((entry, i) => (
-            <div key={entry.id} className="flex items-center justify-between gap-3 px-4 py-3 border border-gray-100 rounded-xl">
+            <div key={entry.id} className="flex items-center justify-between gap-3 px-4 py-3 border border-gray-100 rounded-md">
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-gray-900 truncate">{entry.message}</p>
                 <p className="text-xs text-gray-400">{timeAgo(entry.timestamp)}</p>

@@ -47,7 +47,7 @@ export default function MembershipPage() {
             {tiers.map((t) => (
               <div
                 key={t.name}
-                className={`rounded-2xl p-8 flex flex-col ${
+                className={`rounded-lg p-8 flex flex-col ${
                   t.featured
                     ? 'bg-tie-red text-white shadow-xl'
                     : 'border border-gray-100 text-gray-900'
@@ -73,7 +73,7 @@ export default function MembershipPage() {
                 </ul>
                 <a
                   href="mailto:ExecutiveDirector@austin.tie.org"
-                  className={`block text-center text-[11px] font-black tracking-widest uppercase py-3.5 rounded-full transition-colors ${
+                  className={`block text-center text-[11px] font-black tracking-widest uppercase py-3.5 rounded-md transition-colors ${
                     t.featured
                       ? 'bg-white text-tie-red hover:bg-gray-100'
                       : 'border border-gray-200 text-gray-700 hover:border-tie-red hover:text-tie-red'

@@ -36,9 +36,9 @@ export default function CommitModal() {
 
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-8">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-sm p-8">
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#7D1426' }}>
+          <div className="w-9 h-9 rounded-md flex items-center justify-center shrink-0" style={{ background: '#7D1426' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
@@ -49,7 +49,7 @@ export default function CommitModal() {
           </div>
         </div>
 
-        <ul className="max-h-28 overflow-y-auto mb-5 space-y-1 text-xs text-gray-500 list-disc list-inside bg-gray-50 rounded-lg p-3">
+        <ul className="max-h-28 overflow-y-auto mb-5 space-y-1 text-xs text-gray-500 list-disc list-inside bg-gray-50 rounded-md p-3">
           {pendingChanges.map((c, i) => <li key={i}>{c}</li>)}
         </ul>
 
@@ -61,7 +61,7 @@ export default function CommitModal() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               autoFocus
-              className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-xl outline-none focus:border-[#7D1426] transition-colors"
+              className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-md outline-none focus:border-[#7D1426] transition-colors"
             />
           </div>
           <div>
@@ -71,7 +71,7 @@ export default function CommitModal() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-xl outline-none focus:border-[#7D1426] transition-colors"
+              className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-md outline-none focus:border-[#7D1426] transition-colors"
             />
             {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
           </div>
@@ -79,14 +79,14 @@ export default function CommitModal() {
             <button
               type="button"
               onClick={closePublish}
-              className="flex-1 py-2.5 text-sm font-semibold text-gray-500 border border-gray-200 rounded-xl hover:border-gray-300 transition-colors"
+              className="flex-1 py-2.5 text-sm font-semibold text-gray-500 border border-gray-200 rounded-md hover:border-gray-300 transition-colors"
             >
               Keep editing
             </button>
             <button
               type="submit"
               disabled={busy || !password || !message.trim()}
-              className="flex-1 py-2.5 text-sm font-semibold text-white rounded-xl transition-colors disabled:opacity-50"
+              className="flex-1 py-2.5 text-sm font-semibold text-white rounded-md transition-colors disabled:opacity-50"
               style={{ background: '#7D1426' }}
             >
               {busy ? 'Publishing…' : 'Publish'}

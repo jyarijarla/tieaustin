@@ -25,7 +25,7 @@ export default function EditWrapper({ sectionKey, title, fields, children }) {
           <button
             onClick={() => setOpen(true)}
             title={`Edit ${title}`}
-            className="absolute top-4 right-4 z-30 flex items-center gap-1.5 bg-white border border-gray-200 shadow-md text-gray-600 hover:text-[#7D1426] hover:border-[#7D1426]/40 rounded-full px-3 py-2 text-xs font-semibold transition-all opacity-0 group-hover/edit:opacity-100"
+            className="absolute top-4 right-4 z-30 flex items-center gap-1.5 bg-white border border-gray-200 shadow-md text-gray-600 hover:text-[#7D1426] hover:border-[#7D1426]/40 rounded-md px-3 py-2 text-xs font-semibold transition-all opacity-0 group-hover/edit:opacity-100"
           >
             <PencilIcon />
             Edit

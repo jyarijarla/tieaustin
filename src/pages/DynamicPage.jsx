@@ -60,7 +60,7 @@ export default function DynamicPage() {
         {isAdmin && (
           <button
             onClick={() => setSettingsOpen(true)}
-            className="shrink-0 text-xs font-semibold text-gray-400 hover:text-[#7D1426] border border-gray-200 hover:border-[#7D1426]/40 rounded-full px-3 py-1.5 transition-colors"
+            className="shrink-0 text-xs font-semibold text-gray-400 hover:text-[#7D1426] border border-gray-200 hover:border-[#7D1426]/40 rounded-md px-3 py-1.5 transition-colors"
           >
             Page settings
           </button>
@@ -77,13 +77,13 @@ export default function DynamicPage() {
               <div className="absolute top-2 right-4 z-30 flex gap-2 opacity-0 group-hover/section:opacity-100 transition-opacity">
                 <button
                   onClick={() => setEditingSection(section)}
-                  className="bg-white border border-gray-200 shadow-md text-gray-600 hover:text-[#7D1426] hover:border-[#7D1426]/40 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors"
+                  className="bg-white border border-gray-200 shadow-md text-gray-600 hover:text-[#7D1426] hover:border-[#7D1426]/40 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(section)}
-                  className="bg-white border border-gray-200 shadow-md text-gray-600 hover:text-red-600 hover:border-red-200 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors"
+                  className="bg-white border border-gray-200 shadow-md text-gray-600 hover:text-red-600 hover:border-red-200 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
                 >
                   Delete
                 </button>

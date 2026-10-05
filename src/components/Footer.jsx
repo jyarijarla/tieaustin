@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAdmin } from '../contexts/AdminContext'
+import SubscribeModal from './SubscribeModal'
 
 const JOIN_URL =
   'https://creatorapp.zohopublic.com/tie_dev/chapters/page-embed/TiE_Member_Details/wbegNfNZCbUwdv6jTpxMeK4HtB0KnTkKqVM63wEZzQ1yBx6pqybCB0kv3geqGsvDZASaa6K3XAkkAZbmYfC5kG3ZHQkAj7CabE34?Chapter_Name=4189632000003403039'
@@ -35,6 +37,7 @@ function FooterLink({ item }) {
 
 export default function Footer({ onAdminClick }) {
   const { isAdmin } = useAdmin()
+  const [showSubscribe, setShowSubscribe] = useState(false)
 
   return (
     <footer className="bg-gray-950 text-white px-6 pt-14 pb-8">
@@ -46,7 +49,7 @@ export default function Footer({ onAdminClick }) {
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
             <Link to="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded flex items-center justify-center shrink-0" style={{ background: '#7D1426' }}>
+              <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0" style={{ background: '#7D1426' }}>
                 <span className="text-white font-black text-[11px] leading-none">TiE</span>
               </div>
               <span className="font-black text-white tracking-tight text-sm">
@@ -62,6 +65,16 @@ export default function Footer({ onAdminClick }) {
             >
               ExecutiveDirector@austin.tie.org
             </a>
+            <button
+              onClick={() => setShowSubscribe(true)}
+              className="flex items-center gap-2 mt-5 px-4 py-2 text-xs font-semibold text-white rounded-md hover:opacity-90 transition-opacity"
+              style={{ background: '#7D1426' }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>
+              </svg>
+              Subscribe to our newsletter
+            </button>
           </div>
 
           {/* Nav columns */}
@@ -112,6 +125,8 @@ export default function Footer({ onAdminClick }) {
         </div>
 
       </div>
+
+      {showSubscribe && <SubscribeModal onClose={() => setShowSubscribe(false)} />}
     </footer>
   )
 }

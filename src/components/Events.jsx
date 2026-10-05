@@ -1,20 +1,8 @@
 import { useEffect, useState } from 'react'
 
-const FALLBACK_EVENTS = [
-  {
-    id: 'f1',
-    date: { day: '—', month: '—' },
-    title: 'Events loading…',
-    location: '',
-    desc: 'Check back soon for upcoming TiE Austin events.',
-    url: null,
-  },
-]
-
 export default function Events() {
   const [events, setEvents] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     fetch('/api/events')
@@ -22,18 +10,11 @@ export default function Events() {
         if (!r.ok) throw new Error('API error')
         return r.json()
       })
-      .then((data) => {
-        const upcoming = data.upcoming ?? data
-        setEvents(upcoming.length ? upcoming.slice(0, 3) : FALLBACK_EVENTS)
-        setLoading(false)
-      })
-      .catch(() => {
-        setError(true)
-        setLoading(false)
-      })
+      .then((data) => setEvents((data.upcoming ?? data).slice(0, 3)))
+      // a failed load reads the same as an empty schedule to visitors
+      .catch(() => setEvents([]))
+      .finally(() => setLoaded(true))
   }, [])
-
-  const displayed = loading ? FALLBACK_EVENTS : error ? FALLBACK_EVENTS : events
 
   return (
     <section id="events" className="bg-gray-50 py-24 px-6">
@@ -53,8 +34,21 @@ export default function Events() {
           </a>
         </div>
 
-        <div className="space-y-px bg-gray-200 border border-gray-200 rounded-2xl overflow-hidden">
-          {displayed.map((e) => {
+        {/* nothing renders until loaded, so visitors never see a loading state */}
+        {loaded && (
+        <div className="space-y-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+          {events.length === 0 && (
+            <div className="bg-white px-8 py-12 text-center">
+              <p className="text-sm font-bold text-gray-900">No upcoming events scheduled yet</p>
+              <p className="text-sm text-gray-500 mt-1.5">
+                New events are added regularly.{' '}
+                <a href="/events" className="font-semibold text-tie-red hover:underline">Browse past events</a>
+                {' '}to see what we do.
+              </p>
+            </div>
+          )}
+
+          {events.map((e) => {
             const inner = (
               <div className="bg-white px-8 py-7 flex gap-8 items-start group hover:bg-gray-50 transition-colors">
                 {/* Date */}
@@ -88,12 +82,11 @@ export default function Events() {
             )
           })}
         </div>
+        )}
 
         <div className="sm:hidden text-center mt-8">
           <a
-            href="https://backstage.zoho.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/events"
             className="text-xs font-bold tracking-widest uppercase text-gray-400 hover:text-gray-900 transition-colors"
           >
             View all events →

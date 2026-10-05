@@ -84,11 +84,11 @@ export default function WhyJoin() {
           {pillars.map((p, i) => (
             <div
               key={p.label}
-              className={`bg-white rounded-2xl p-8 border border-gray-100 flex flex-col gap-4 ${
+              className={`bg-white rounded-lg p-8 border border-gray-100 flex flex-col gap-4 ${
                 i === 3 ? 'lg:col-start-1' : ''
               }`}
             >
-              <div className="w-12 h-12 rounded-xl bg-tie-red/8 flex items-center justify-center text-tie-red shrink-0">
+              <div className="w-12 h-12 rounded-md bg-tie-red/8 flex items-center justify-center text-tie-red shrink-0">
                 {p.icon}
               </div>
               <div>

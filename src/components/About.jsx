@@ -29,7 +29,7 @@ export default function About() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-px bg-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
+        <div className="grid sm:grid-cols-3 gap-px bg-gray-100 border border-gray-100 rounded-lg overflow-hidden">
           {pillars.map((p) => (
             <div key={p.title} className="bg-white p-8">
               <div className="w-8 h-0.5 bg-tie-red mb-6" />

@@ -14,7 +14,7 @@ export default function Sponsors() {
           {sponsors.map((s) => (
             <div
               key={s.name}
-              className="bg-white rounded-lg px-10 py-6 flex items-center justify-center"
+              className="bg-white rounded-md px-10 py-6 flex items-center justify-center"
               style={{ minWidth: '180px' }}
             >
               <div className="flex items-center gap-2">

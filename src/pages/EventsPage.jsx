@@ -21,7 +21,7 @@ function PinIcon() {
 function EventCard({ e }) {
   const dateBlock = (
     <div
-      className={`shrink-0 flex flex-col items-center justify-center rounded-lg w-12 h-14 text-center ${e.image ? 'absolute top-2 left-2 shadow-md' : ''}`}
+      className={`shrink-0 flex flex-col items-center justify-center rounded-md w-12 h-14 text-center ${e.image ? 'absolute top-2 left-2 shadow-md' : ''}`}
       style={{ background: e.isPast ? '#f9fafb' : '#7D1426', border: e.isPast ? '1px solid #e5e7eb' : 'none' }}
     >
       <span className="text-lg font-black leading-none tabular-nums" style={{ color: e.isPast ? '#111827' : '#fff' }}>
@@ -37,10 +37,10 @@ function EventCard({ e }) {
   )
 
   const card = (
-    <div className="group bg-white border border-gray-200 rounded-xl p-5 flex flex-col sm:flex-row gap-5 sm:items-start hover:border-[#7D1426]/30 hover:shadow-sm transition-all">
+    <div className="group bg-white border border-gray-200 rounded-md p-5 flex flex-col sm:flex-row gap-5 sm:items-start hover:border-[#7D1426]/30 hover:shadow-sm transition-all">
       {/* Thumbnail with date overlaid, or date block alone */}
       {e.image ? (
-        <div className="relative shrink-0 w-full sm:w-52 aspect-video rounded-lg overflow-hidden bg-gray-100">
+        <div className="relative shrink-0 w-full sm:w-52 aspect-video rounded-md overflow-hidden bg-gray-100">
           <img
             src={e.image}
             alt=""
@@ -101,7 +101,7 @@ function Pagination({ page, total, onPage }) {
       <button
         onClick={() => onPage(page - 1)}
         disabled={page === 1}
-        className="px-3 py-1.5 text-xs font-medium text-gray-500 rounded-lg border border-gray-200 hover:border-gray-300 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+        className="px-3 py-1.5 text-xs font-medium text-gray-500 rounded-md border border-gray-200 hover:border-gray-300 disabled:opacity-30 disabled:pointer-events-none transition-colors"
       >
         ← Prev
       </button>
@@ -112,7 +112,7 @@ function Pagination({ page, total, onPage }) {
           <button
             key={n}
             onClick={() => onPage(n)}
-            className={`w-8 h-8 text-xs font-medium rounded-lg border transition-colors ${
+            className={`w-8 h-8 text-xs font-medium rounded-md border transition-colors ${
               page === n
                 ? 'bg-[#7D1426] border-[#7D1426] text-white'
                 : 'border-gray-200 text-gray-600 hover:border-gray-300'
@@ -125,7 +125,7 @@ function Pagination({ page, total, onPage }) {
       <button
         onClick={() => onPage(page + 1)}
         disabled={page === pages}
-        className="px-3 py-1.5 text-xs font-medium text-gray-500 rounded-lg border border-gray-200 hover:border-gray-300 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+        className="px-3 py-1.5 text-xs font-medium text-gray-500 rounded-md border border-gray-200 hover:border-gray-300 disabled:opacity-30 disabled:pointer-events-none transition-colors"
       >
         Next →
       </button>
@@ -201,16 +201,16 @@ export default function EventsPage() {
               placeholder="Search events…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#7D1426] focus:bg-white transition-colors placeholder-gray-400"
+              className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-md outline-none focus:border-[#7D1426] focus:bg-white transition-colors placeholder-gray-400"
             />
           </div>
 
-          <div className="flex shrink-0 bg-gray-100 rounded-lg p-1 gap-1">
+          <div className="flex shrink-0 bg-gray-100 rounded-md p-1 gap-1">
             {['upcoming', 'past'].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 text-xs font-semibold rounded-md capitalize transition-colors ${
+                className={`px-4 py-1.5 text-xs font-semibold rounded-sm capitalize transition-colors ${
                   filter === f ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                 }`}
               >

@@ -29,13 +29,13 @@ export default function JoinCTA() {
               href={JOIN_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-white text-tie-red text-xs font-black tracking-widest uppercase px-7 py-4 rounded-full hover:bg-gray-100 transition-colors"
+              className="bg-white text-tie-red text-xs font-black tracking-widest uppercase px-7 py-4 rounded-md hover:bg-gray-100 transition-colors"
             >
               Apply for Membership
             </a>
             <a
               href="/contact"
-              className="border-2 border-white/40 text-white text-xs font-black tracking-widest uppercase px-7 py-4 rounded-full hover:border-white/80 transition-colors"
+              className="border-2 border-white/40 text-white text-xs font-black tracking-widest uppercase px-7 py-4 rounded-md hover:border-white/80 transition-colors"
             >
               Get in Touch
             </a>

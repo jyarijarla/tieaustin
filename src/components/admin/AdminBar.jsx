@@ -44,14 +44,14 @@ export default function AdminBar() {
       <div className="flex items-center gap-3">
         <button
           onClick={() => setNewPageOpen(true)}
-          className="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white rounded-full pl-2.5 pr-3.5 py-1.5 transition-colors"
+          className="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white rounded-md pl-2.5 pr-3.5 py-1.5 transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New page
         </button>
         <button
           onClick={() => setHistoryOpen(true)}
-          className="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white rounded-full pl-2.5 pr-3.5 py-1.5 transition-colors"
+          className="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white rounded-md pl-2.5 pr-3.5 py-1.5 transition-colors"
         >
           <History size={14} strokeWidth={2.5} />
           History
@@ -67,7 +67,7 @@ export default function AdminBar() {
         <button
           onClick={openPublish}
           disabled={!isDirty}
-          className="flex items-center gap-1.5 bg-white text-[#7D1426] rounded-full pl-2.5 pr-3.5 py-1.5 font-bold transition-colors disabled:bg-white/15 disabled:text-white/50"
+          className="flex items-center gap-1.5 bg-white text-[#7D1426] rounded-md pl-2.5 pr-3.5 py-1.5 font-bold transition-colors disabled:bg-white/15 disabled:text-white/50"
         >
           <Check size={14} strokeWidth={3} />
           {saving ? 'Publishing…' : 'Publish changes'}

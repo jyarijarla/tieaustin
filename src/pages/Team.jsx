@@ -19,7 +19,7 @@ export default function TeamPage() {
           <h1 className="text-3xl sm:text-4xl font-black text-gray-900 uppercase tracking-tight text-center mb-14 leading-tight">
             Austin Team
           </h1>
-          <div className="rounded-2xl overflow-hidden shadow-sm max-w-lg mx-auto">
+          <div className="rounded-lg overflow-hidden shadow-sm max-w-lg mx-auto">
             <img src={imageSrc} alt="TiE Austin Team" className="w-full object-cover" />
           </div>
         </div>

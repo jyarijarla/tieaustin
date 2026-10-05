@@ -40,7 +40,7 @@ export default function PageSettingsModal({ page, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-8">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-sm p-8">
         <div className="mb-6">
           <p className="font-black text-gray-900 text-sm">Page settings</p>
         </div>
@@ -52,7 +52,7 @@ export default function PageSettingsModal({ page, onClose }) {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-xl outline-none focus:border-[#7D1426] transition-colors"
+              className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-md outline-none focus:border-[#7D1426] transition-colors"
             />
           </div>
           <div>
@@ -63,7 +63,7 @@ export default function PageSettingsModal({ page, onClose }) {
                 type="text"
                 value={slug}
                 onChange={(e) => setSlug(slugify(e.target.value))}
-                className="flex-1 px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-xl outline-none focus:border-[#7D1426] transition-colors"
+                className="flex-1 px-4 py-2.5 text-sm text-gray-900 border border-gray-200 rounded-md outline-none focus:border-[#7D1426] transition-colors"
               />
             </div>
             {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
@@ -73,13 +73,13 @@ export default function PageSettingsModal({ page, onClose }) {
         <div className="flex gap-3 pt-6">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 text-sm font-semibold text-gray-500 border border-gray-200 rounded-xl hover:border-gray-300 transition-colors"
+            className="flex-1 py-2.5 text-sm font-semibold text-gray-500 border border-gray-200 rounded-md hover:border-gray-300 transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 py-2.5 text-sm font-semibold text-white rounded-xl transition-colors"
+            className="flex-1 py-2.5 text-sm font-semibold text-white rounded-md transition-colors"
             style={{ background: '#7D1426' }}
           >
             Save

@@ -40,7 +40,7 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 shrink-0">
-          <div className="w-8 h-8 bg-tie-red rounded flex items-center justify-center">
+          <div className="w-8 h-8 bg-tie-red rounded-sm flex items-center justify-center">
             <span className="text-white font-black text-[11px] leading-none">TiE</span>
           </div>
           <span className="font-black text-gray-900 tracking-tight text-sm">
@@ -73,7 +73,7 @@ export default function Navbar() {
 
                   {dropdownOpen && (
                     <div className="absolute top-full left-0 pt-1 min-w-[170px]">
-                      <div className="bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden py-1">
+                      <div className="bg-white border border-gray-100 rounded-md shadow-lg overflow-hidden py-1">
                         {l.dropdown.map((sub) => (
                           <NavLink
                             key={sub.label}
@@ -124,7 +124,7 @@ export default function Navbar() {
             href="https://creatorapp.zohopublic.com/tie_dev/chapters/page-embed/TiE_Member_Details/wbegNfNZCbUwdv6jTpxMeK4HtB0KnTkKqVM63wEZzQ1yBx6pqybCB0kv3geqGsvDZASaa6K3XAkkAZbmYfC5kG3ZHQkAj7CabE34?Chapter_Name=4189632000003403039"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-tie-red text-white text-[11px] font-bold tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-tie-red-dark transition-colors whitespace-nowrap"
+            className="bg-tie-red text-white text-[11px] font-bold tracking-widest uppercase px-5 py-2.5 rounded-md hover:bg-tie-red-dark transition-colors whitespace-nowrap"
           >
             Join Now
           </a>
@@ -205,7 +205,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="block text-center bg-tie-red text-white text-[11px] font-bold tracking-widest uppercase py-3 rounded-full"
+              className="block text-center bg-tie-red text-white text-[11px] font-bold tracking-widest uppercase py-3 rounded-md"
             >
               Join Now
             </a>
